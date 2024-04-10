@@ -1,0 +1,2 @@
+It contains assets of our project. 
+It consists of images and styling files. Here we can store our global styles.
