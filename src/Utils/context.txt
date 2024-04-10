@@ -1,0 +1,2 @@
+This folder consists of some repeatedly used function that are commonly used in the project. 
+Regex conditions, data formatting, dropdown options etc.

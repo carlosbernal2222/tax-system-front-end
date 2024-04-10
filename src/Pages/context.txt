@@ -1,0 +1,1 @@
+The files in the pages folder indicate the route of the react application. Each file in this folder contains its route. 
