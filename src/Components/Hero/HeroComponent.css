@@ -1,0 +1,58 @@
+/* Custom Hero Styles */
+.custom-hero {
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.usa-hero__callout {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.usa-hero__image {
+    flex: 1;
+}
+
+.usa-hero img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+}
+
+.custom-hero .usa-grid,
+.custom-hero .grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows wrapping on smaller screens */
+    align-items: center;
+    /* Vertical alignment */
+    justify-content: space-between;
+    /* Horizontal spacing */
+}
+
+.usa-hero__callout {
+    flex: 1 1 50%;
+    /* Flex-grow, flex-shrink, and basis */
+    padding-right: 20px;
+    margin-right: 150px;
+    /* Space between text and image */
+}
+
+.usa-hero__image {
+    flex: 1 1 50%;
+    /* Flex-grow, flex-shrink, and basis */
+    display: flex;
+    justify-content: flex-end;
+    /* Aligns image to the right */
+}
+
+.usa-hero__image img {
+    width: 100%;
+    /* Full width of the container */
+    max-width: 500px;
+    /* Maximum width of the image */
+    height: auto;
+    /* Maintain aspect ratio */
+}

@@ -1,49 +1,57 @@
-import React, { useState } from "react";
-import { Header, Menu, NavDropDownButton, NavMenuButton, PrimaryNav, Search, Title } from "@trussworks/react-uswds";
+import React, { useState } from 'react';
+import { Header, Title, NavMenuButton, PrimaryNav, Menu, NavDropDownButton } from '@trussworks/react-uswds';
+import { Link } from 'react-router-dom';
 
-const HeaderComponent: React.FC = (): React.ReactElement => {
-    const [expanded, setExpanded] = useState(false);
-    const onClick = (): void => setExpanded(prvExpanded => !prvExpanded);
-    const [isOpen, setIsOpen] = useState([false, false]);
+const HeaderComponent: React.FC = () => {
 
-    const onToggle = (index: number) => {
-        setIsOpen(prevIsOpen =>
-            prevIsOpen.map((item, idx) => idx === index ? !item : item)
-        );
-    };
+  const [expanded, setExpanded] = useState(false);
+  const onClick = (): void => setExpanded(prevExpanded => !prevExpanded);
 
-    const testMenuItems = [
-        <a href="#linkOne" key="one">Current link</a>,
-        <a href="#linkTwo" key="two">Simple link Two</a>
-    ];
+  const [isOpen, setIsOpen] = useState([false, false]);
+  const handleToggle = (index: number) => {
+    setIsOpen(prevIsOpen => {
+      const newIsOpen = [...prevIsOpen];
+      newIsOpen[index] = !prevIsOpen[index];
+      return newIsOpen;
+    });
+  };
 
-    const testItemsMenu = [
-        <>
-            <NavDropDownButton menuId="testDropDownOne" onToggle={() => onToggle(0)} isOpen={isOpen[0]} label="Nav Label" isCurrent={true} />
-            <Menu key="one" items={testMenuItems} isOpen={isOpen[0]} id="testDropDownOne" />
-        </>,
-        <a href="#two" key="two" className="usa-nav__link"><span>Parent link</span></a>,
-        <a href="#three" key="three" className="usa-nav__link"><span>Parent link</span></a>
-    ];
-
-    const mockSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
-        // handle search submit logic here
-    };
-
-    return (
-        <Header basic={true} showMobileOverlay={expanded}>
-            <div className="usa-nav-container">
-                <div className="usa-navbar">
-                    <Title>Project Title</Title>
-                    <NavMenuButton onClick={onClick} label="Menu" />
-                </div>
-                <PrimaryNav items={testItemsMenu} mobileExpanded={expanded} onToggleMobileNav={onClick}>
-                    <Search size="small" onSubmit={mockSubmit} />
-                </PrimaryNav>
-            </div>
-        </Header>
-    );
+  const testMenuItems = [
+    <a href="/" key="one">Home</a>, 
+    <a href="#linkTwo" key="two">About</a>
+  ];
+ 
+  const testItemsMenu = [
+    <>
+      <NavDropDownButton 
+        key="dropdown1" 
+        menuId="testDropDownOne" 
+        onToggle={() => handleToggle(0)} 
+        isOpen={isOpen[0]} 
+        label="Explore" 
+        isCurrent={true}
+      />
+      <Menu key="menu1" items={testMenuItems} isOpen={isOpen[0]} id="testDropDownOne" />
+    </>,
+    <a key="two" href="#login" className="usa-nav__link"><span>Log In</span></a>,
+  
+  ];
+// 
+  return (
+    <>
+      <Header basic={true} showMobileOverlay={expanded}>
+        <div className="usa-nav-container">
+          <div className="usa-navbar">
+            <Link to="/" className="usa-nav__brand">
+              <Title id="extended-logo">Picnic Tax</Title>
+            </Link>
+            <NavMenuButton onClick={onClick} label="Menu" />
+          </div>
+          <PrimaryNav items={testItemsMenu} mobileExpanded={expanded} onToggleMobileNav={onClick} />
+        </div>
+      </Header>
+    </>
+  );
 };
 
 export default HeaderComponent;
