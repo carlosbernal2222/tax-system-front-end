@@ -1,6 +1,4 @@
 import React from 'react';
-
-
 const MainInfo: React.FC = () => {
     
     const[isExpanded, setIsExpanded] = React.useState(false);

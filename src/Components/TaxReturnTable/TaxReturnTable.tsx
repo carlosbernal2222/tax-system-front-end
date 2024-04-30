@@ -34,7 +34,7 @@ const TaxReturnTable: React.FC<TaxReturnTableProps> = ({ taxReturns }) => {
                         <td>{taxReturn.year}</td>
                         <td>{taxReturn.filingStatus}</td>
                         <td>${taxReturn.amount.toLocaleString()}</td>
-<td>
+                        <td>
                             {taxReturn.filingStatus === 'In Progress' && (
                                 <Button 
                                     type="button" 
