@@ -1,46 +1,65 @@
-import React from 'react';
-import TaxReturnTable from '../../Components/TaxReturnTable/TaxReturnTable';
-import { Button } from '@trussworks/react-uswds';
+// src/components/Dashboard.tsx
 
-const taxReturns = [
-    {
-        id: 1,
-        year: 2020,
-        filingStatus: 'Single',
-        amount: 1000,
-    },
-    {
-        id: 2,
-        year: 2020,
-        filingStatus: 'Married',
-        amount: 2000,
-    },
-    
-];
+import React, { useState } from 'react';
+import { Button } from '@trussworks/react-uswds';
+import styles from './Dashboard.module.css';
+
+interface TaxFiling {
+    id: number;
+    year: number;
+    status: string;
+    returnedAmount?: number | null;
+}
 
 const Dashboard: React.FC = () => {
+    const [filings, setFilings] = useState<TaxFiling[]>([
+        { id: 1, year: 2021, status: 'Completed', returnedAmount: 1200 },
+        { id: 2, year: 2022, status: 'In Progress', returnedAmount: null },
+    ]);
 
-    const handleStartNewReturn = () => {
-    console.log('Starting new tax return process...'); // Replace with your actual function
+    const handleStartNewFiling = () => {
+        console.log("Starting new filing process...");
+    };
+
+    const handleContinueFiling = (id: number) => {
+        console.log(`Continuing filing for ID ${id}`);
     };
 
     return (
-        <div>
-            <h1>Dashboard Page</h1>
-            <div style={{ 
-                display: 'flex', 
-                justifyContent: 'center',
-            }}>
-                <Button 
-                    className='bg-primary text-white'
-                    type="button"
-                    onClick={handleStartNewReturn} 
-                    outline={true} 
-                >
-                    File Tax
-                </Button>
-            </div>
-            <TaxReturnTable taxReturns={taxReturns} />
+        <div className={styles.dashboardContainer}>
+            <h1 className="usa-header">Tax Filings Dashboard</h1>
+            <Button type="button" onClick={handleStartNewFiling} className={`usa-button ${styles.buttonNewFiling}`}>
+                Start New Filing
+            </Button>
+            <table className={`usa-table usa-table--bordered ${styles.dashboardTable}`}>
+                <caption>Bordered Tax Filing Table</caption>
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {filings.map((filing) => (
+                    <tr key={filing.id}>
+                        <th scope="row">{filing.id}</th>
+                        <td>{filing.year}</td>
+                        <td>{filing.status}</td>
+                        <td>
+                            {filing.status === 'Completed' ? (
+                                `Returned: $${filing.returnedAmount}`
+                            ) : (
+                                <Button type='button' onClick={() => handleContinueFiling(filing.id)} className="usa-button usa-button--secondary">
+                                    Continue Filing
+                                </Button>
+                            )}
+                        </td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
         </div>
     );
 };

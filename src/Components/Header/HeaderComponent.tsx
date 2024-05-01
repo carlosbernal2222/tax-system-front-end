@@ -3,7 +3,6 @@ import { Header, Title, NavMenuButton, PrimaryNav, Menu, NavDropDownButton } fro
 import { Link } from 'react-router-dom';
 
 const HeaderComponent: React.FC = () => {
-
   const [expanded, setExpanded] = useState(false);
   const onClick = (): void => setExpanded(prevExpanded => !prevExpanded);
 
@@ -16,41 +15,45 @@ const HeaderComponent: React.FC = () => {
     });
   };
 
-  const testMenuItems = [
-    <a href="/" key="one">Home</a>, 
-    <a href="#linkTwo" key="two">About</a>
+  const menuItems = [
+    <a href="/" key="one">Home</a>,
+    <a href="/about" key="two">About</a>
   ];
- 
-  const testItemsMenu = [
+
+  const itemsMenu = [
     <>
-      <NavDropDownButton 
-        key="dropdown1" 
-        menuId="testDropDownOne" 
-        onToggle={() => handleToggle(0)} 
-        isOpen={isOpen[0]} 
-        label="Explore" 
-        isCurrent={true}
+      <NavDropDownButton
+          key="dropdown1"
+          menuId="dropDownOne"
+          onToggle={() => handleToggle(0)}
+          isOpen={isOpen[0]}
+          label="Explore"
+          isCurrent={true}
       />
-      <Menu key="menu1" items={testMenuItems} isOpen={isOpen[0]} id="testDropDownOne" />
+      <Menu key="menu1" items={menuItems} isOpen={isOpen[0]} id="dropDownOne" />
     </>,
-    <a key="two" href="#login" className="usa-nav__link"><span>Log In</span></a>,
-  
+    <Link key="one" to="/login" className="usa-nav__link">
+      <span>Log In</span>
+    </Link>,
+    <Link key="user-edit" to="/user-edit" className="usa-nav__link">
+      <i className="fa fa-user" aria-hidden="true"></i><span> Edit Profile</span>
+    </Link>
   ];
-// 
+
   return (
-    <>
-      <Header basic={true} showMobileOverlay={expanded}>
-        <div className="usa-nav-container">
-          <div className="usa-navbar">
-            <Link to="/" className="usa-nav__brand">
-              <Title id="extended-logo">Picnic Tax</Title>
-            </Link>
-            <NavMenuButton onClick={onClick} label="Menu" />
+      <>
+        <Header basic={true} showMobileOverlay={expanded}>
+          <div className="usa-nav-container">
+            <div className="usa-navbar">
+              <Link to="/" className="usa-nav__brand">
+                <Title id="extended-logo">Picnic Tax</Title>
+              </Link>
+              <NavMenuButton onClick={onClick} label="Menu" />
+            </div>
+            <PrimaryNav items={itemsMenu} mobileExpanded={expanded} onToggleMobileNav={onClick} />
           </div>
-          <PrimaryNav items={testItemsMenu} mobileExpanded={expanded} onToggleMobileNav={onClick} />
-        </div>
-      </Header>
-    </>
+        </Header>
+      </>
   );
 };
 

@@ -1,0 +1,18 @@
+/* src/components/Dashboard.module.css */
+
+.dashboardContainer {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboardTable {
+    width: 100%;
+    max-width: 960px; /* Max width for better readability on larger screens */
+    margin: 20px 0;
+}
+
+.buttonNewFiling {
+    margin-bottom: 20px;
+}

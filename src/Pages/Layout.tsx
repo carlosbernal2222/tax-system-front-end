@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import HeaderComponent from '../Components/Header/HeaderComponent'; // Adjust the import path as necessary
+import HeaderComponent from '../Components/Header/HeaderComponent';
 import FooterComponent from '../Components/Footer/FooterComponent';
 import './Layout.css';
 
