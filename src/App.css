@@ -1,0 +1,19 @@
+html,
+body {
+    height: 100%;
+    /* Ensure the full height */
+    margin: 0;
+    /* Remove default margin */
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Viewport height */
+}
+
+.app {
+    flex: 1;
+    /* Makes the application container grow to fill the space */
+}
