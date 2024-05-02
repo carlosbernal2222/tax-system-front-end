@@ -37,7 +37,10 @@ const HeaderComponent: React.FC = () => {
     </Link>,
     <Link key="user-edit" to="/user-edit" className="usa-nav__link">
       <i className="fa fa-user" aria-hidden="true"></i><span> Edit Profile</span>
-    </Link>
+    </Link>,
+    <Link key={"dashboard"} to="/dashboard" className="usa-nav__link">
+          <i className="fa fa-tachometer" aria-hidden="true"></i><span> Dashboard</span>
+    </Link>,
   ];
 
   return (

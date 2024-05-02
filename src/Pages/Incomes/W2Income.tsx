@@ -19,6 +19,7 @@ interface W2IncomeProps {
 
 const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
     const [w2s, setW2s] = useState<W2Form[]>([]);
+
     const [w2, setW2] = useState<W2Form>({
         id: uuidv4(),
         employer: '',
@@ -33,30 +34,42 @@ const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
         setW2({ ...w2, [e.target.name]: e.target.value });
     };
 
+    //POST request to submit the W2 form
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Submitting W2 Form for Tax Return ID:", taxReturnId, w2);
-        setW2s([...w2s, w2]);
+        setW2s(prevW2s => [...prevW2s, { ...w2, id: uuidv4() }]);
+        resetForm();
+    };
+
+    //Update request to update the W2 form
+    const handleEdit = (id: string) => {
+        const formToEdit = w2s.find(item => item.id === id);
+        if (formToEdit) {
+            setW2({ ...formToEdit });
+        }
+    };
+
+    const handleDelete = (id: string) => {
+        setW2s(w2s.filter(item => item.id !== id));
+    };
+
+    const resetForm = () => {
         setW2({
-            id: uuidv4(),
+            id: uuidv4(), // Ensure a new ID is generated for the next form submission
             employer: '',
             year: '',
             wages: '',
             federalIncomeTaxWithheld: '',
             socialSecurityTaxWithheld: '',
             medicareTaxWithheld: ''
-        }); // Reset the form after submission
+        });
     };
 
-    const handleEdit = (id: string) => {
-        const formToEdit = w2s.find(item => item.id === id);
-        if (formToEdit) {
-            setW2(formToEdit);
-        }
-    };
-
-    const handleDelete = (id: string) => {
-        setW2s(w2s.filter(item => item.id !== id));
+    // Replace with get request to fetch W2 forms for the tax return
+    // @ts-ignore
+    const fetchW2s = () => {
+        console.log("Fetched W2s:", w2s);
     };
 
     return (
@@ -88,9 +101,12 @@ const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
                             <Label htmlFor={`medicareTaxWithheld-${w2.id}`}>Medicare Tax Withheld</Label>
                             <TextInput id={`medicareTaxWithheld-${w2.id}`} name="medicareTaxWithheld" type="text" value={w2.medicareTaxWithheld} onChange={handleChange} />
                         </Grid>
+
                     </Grid>
-                    <Button type="submit" className={styles.buttonSubmit}>Add W2 Form</Button>
                 </GridContainer>
+                <div className={styles.buttonContainer}>
+                    <Button type="submit" className={styles.buttonSubmit}>Entry W2</Button>
+                </div>
             </form>
             {w2s.length > 0 && (
                 <div className={styles.listContainer}>

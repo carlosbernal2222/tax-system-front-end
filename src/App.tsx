@@ -26,7 +26,7 @@ function App() {
                     <Route path="w2-income" element={<W2Income/>}/>
                     <Route path="self-employment-income" element={<SelfEmploymentIncome/>}/>
                     <Route path="review" element={<ReviewPage/>}/>
-                    <Route path="results" element={<ResultsPage/>}/>
+                    <Route path="result" element={<ResultsPage/>}/>
                 </Route>
               </Route>
           </Routes>

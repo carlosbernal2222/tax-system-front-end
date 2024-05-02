@@ -41,13 +41,14 @@ const Dashboard: React.FC = () => {
     const handleStartNewFiling = async () => {
         // Simulated API call to create a new tax filing
         const newFiling: TaxFiling = await new Promise(resolve => setTimeout(() => resolve({
-            id: filings.length + 1, // Assuming IDs are incremental
+            id: filings.length + 1, // incremeting the ID
             year: new Date().getFullYear(),
             status: 'In Progress',
             returnedAmount: null,
         }), 500));
 
         setFilings([...filings, newFiling]); // Update state with the new filing
+
         // Navigate to the personal information page with the new filing ID under the nested route
         navigate(`/tax-filing/${newFiling.id}/personal-information`);
     };

@@ -11,6 +11,7 @@ import ResultPage from '../ResultsPage/ResultsPage';
 const TaxFilingPage: React.FC = () => {
     const { taxReturnId } = useParams(); // Get tax return ID from the URL
     const navigate = useNavigate();
+    const location = useLocation();
 
     const steps = [
         { path: 'personal-information', component: <PersonalInformation taxReturnId={taxReturnId} />, label: 'Personal Information' },
@@ -22,8 +23,9 @@ const TaxFilingPage: React.FC = () => {
 
     const currentStepIndex = steps.findIndex(step => location.pathname.includes(step.path));
 
+    // Modify goToNextStep to prevent navigation on the last informational step
     const goToNextStep = () => {
-        if (currentStepIndex < steps.length - 1) {
+        if (currentStepIndex < steps.length - 2) { // Adjust index to stop before 'result' step
             navigate(steps[currentStepIndex + 1].path);
         }
     };
@@ -71,7 +73,7 @@ const TaxFilingPage: React.FC = () => {
                 {currentStepIndex > 0 && (
                     <button onClick={goToPreviousStep} className="usa-button">Back</button>
                 )}
-                {currentStepIndex < steps.length - 1 && (
+                {currentStepIndex < steps.length - 2 && (  // Adjust condition to hide 'Next' button on review step
                     <button onClick={goToNextStep} className="usa-button">Next</button>
                 )}
             </div>

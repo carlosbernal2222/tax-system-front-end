@@ -24,6 +24,12 @@ p {
     border-left: 4px solid #205493; /* Adds a thematic blue border on the left for emphasis */
 }
 
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 /* Ensuring that sections align nicely within columns */
 .GridContainer {
     display: flex;

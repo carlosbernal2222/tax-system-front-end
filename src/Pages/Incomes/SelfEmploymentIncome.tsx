@@ -28,12 +28,33 @@ const SelfEmploymentIncome: React.FC<SelfEmploymentIncomeProps> = ({ taxReturnId
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Submitting Form 1099 for Tax Return ID:", taxReturnId, form1099);
-        setForm1099s([...form1099s, form1099]);
+        setForm1099s(prevForms => [...prevForms, { ...form1099, id: uuidv4() }]); // Simulate adding a new Form 1099
+        resetForm();
+    };
+
+    const handleEdit = (id: string) => {
+        const formToEdit = form1099s.find(item => item.id === id);
+        if (formToEdit) {
+            setForm1099({ ...formToEdit }); // Load the Form 1099 data into the form for editing
+        }
+    };
+
+    const handleDelete = (id: string) => {
+        setForm1099s(form1099s.filter(item => item.id !== id)); // Simulate deleting a Form 1099
+    };
+
+    const resetForm = () => {
         setForm1099({
-            id: uuidv4(),
+            id: uuidv4(), // Ensure a new ID is generated for the next form submission
             year: '',
             wages: ''
-        }); // Reset the form after submission
+        });
+    };
+
+    // Mock fetching Form 1099s (would replace this with an API call normally)
+    const fetchForm1099s = () => {
+        // Here we simulate fetching by using the state directly
+        console.log("Fetched Form 1099s:", form1099s);
     };
 
     return (
@@ -51,7 +72,9 @@ const SelfEmploymentIncome: React.FC<SelfEmploymentIncomeProps> = ({ taxReturnId
                         </Grid>
                     </Grid>
                 </GridContainer>
-                <Button type="submit" className={styles.buttonSubmit}>Add Form 1099 Entry</Button>
+                <div className={styles.buttonContainer}>
+                    <Button type="submit" className={styles.buttonSubmit}>Entry 1099</Button>
+                </div>
             </form>
             {form1099s.length > 0 && (
                 <div className={styles.listContainer}>
