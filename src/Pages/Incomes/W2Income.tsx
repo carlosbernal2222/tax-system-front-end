@@ -13,7 +13,11 @@ interface W2Form {
     medicareTaxWithheld: string;
 }
 
-const W2Income: React.FC = () => {
+interface W2IncomeProps {
+    taxReturnId: number;
+}
+
+const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
     const [w2s, setW2s] = useState<W2Form[]>([]);
     const [w2, setW2] = useState<W2Form>({
         id: uuidv4(),
@@ -31,6 +35,7 @@ const W2Income: React.FC = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log("Submitting W2 Form for Tax Return ID:", taxReturnId, w2);
         setW2s([...w2s, w2]);
         setW2({
             id: uuidv4(),
@@ -94,7 +99,6 @@ const W2Income: React.FC = () => {
                         {w2s.map((item) => (
                             <li key={item.id}>
                                 {item.employer} - {item.year} - {item.wages}
-                                {/* Add buttons for edit/delete if needed */}
                                 <Button className={`${styles.actionButton}`} type="button" onClick={() => handleEdit(item.id)}>Edit</Button>
                                 <Button className={`${styles.actionButton} ${styles.delete}`} type="button" onClick={() => handleDelete(item.id)}>Delete</Button>
                             </li>

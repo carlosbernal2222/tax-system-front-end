@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { Button, TextInput, Label, Grid, GridContainer } from '@trussworks/react-uswds';
 import styles from './PersonalInformation.module.css'; // Ensure this CSS module is correctly linked for styling
 
-const PersonalInformation: React.FC = () => {
+// Define a TypeScript interface for props
+interface PersonalInformationProps {
+    taxReturnId: number;
+}
+
+const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }) => {
     const [person, setPerson] = useState({
         firstName: '',
         middleName: '',
@@ -18,8 +23,8 @@ const PersonalInformation: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Personal Information Submitted:", person);
-        // Here you might want to call an API or handle the data in some way
+        console.log("Submitting Personal Information for Tax Return ID:", taxReturnId, person);
+        // Here you might want to call an API or handle the data in some way, including the taxReturnId
     };
 
     return (

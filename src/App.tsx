@@ -21,7 +21,7 @@ function App() {
               <Route path="/" element={<Layout/>}>
                 <Route index element={<LandingPage/>}/>
                 <Route path="dashboard" element={<Dashboard/>}/>
-                <Route path="tax-filing" element={<TaxFilingPage/>}>
+                <Route path="tax-filing/:taxReturnId" element={<TaxFilingPage/>}>
                     <Route path="personal-information" element={<PersonalInformation/>}/>
                     <Route path="w2-income" element={<W2Income/>}/>
                     <Route path="self-employment-income" element={<SelfEmploymentIncome/>}/>

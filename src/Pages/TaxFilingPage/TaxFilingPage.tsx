@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import {Routes, Route, useLocation, useNavigate, useParams} from 'react-router-dom';
 import styles from './TaxFilingPage.module.css';
 import PersonalInformation from '../PersonalInformation/PersonalInformation';
 import W2Income from '../Incomes/W2Income';
@@ -9,14 +9,15 @@ import ReviewPage from '../ReviewPage/ReviewPage';
 import ResultPage from '../ResultsPage/ResultsPage';
 
 const TaxFilingPage: React.FC = () => {
-    const location = useLocation();
+    const { taxReturnId } = useParams(); // Get tax return ID from the URL
     const navigate = useNavigate();
+
     const steps = [
-        { path: 'personal-information', component: <PersonalInformation />, label: 'Personal Information' },
-        { path: 'w2-income', component: <W2Income />, label: 'W2 Income' },
-        { path: 'self-employment-income', component: <SelfEmploymentIncome />, label: 'Self Employment Income' },
-        { path: 'review', component: <ReviewPage />, label: 'Review' },
-        { path: 'result', component: <ResultPage />, label: 'Result' }
+        { path: 'personal-information', component: <PersonalInformation taxReturnId={taxReturnId} />, label: 'Personal Information' },
+        { path: 'w2-income', component: <W2Income taxReturnId={taxReturnId} />, label: 'W2 Income' },
+        { path: 'self-employment-income', component: <SelfEmploymentIncome taxReturnId={taxReturnId} />, label: 'Self Employment Income' },
+        { path: 'review', component: <ReviewPage taxReturnId={taxReturnId} />, label: 'Review' },
+        { path: 'result', component: <ResultPage taxReturnId={taxReturnId} />, label: 'Result' }
     ];
 
     const currentStepIndex = steps.findIndex(step => location.pathname.includes(step.path));

@@ -56,3 +56,40 @@
     height: auto;
     /* Maintain aspect ratio */
 }
+
+/* Button Styles */
+.usa-button {
+    background-color: #004795;
+    color: #ffffff;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+}
+
+.usa-button:hover, .usa-button:focus {
+    background-color: #002d72;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .custom-hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .usa-hero__callout {
+        margin-right: 0;
+        padding-right: 0;
+    }
+
+    .usa-hero__image {
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .usa-hero__image img {
+        max-width: 100%;
+    }
+}

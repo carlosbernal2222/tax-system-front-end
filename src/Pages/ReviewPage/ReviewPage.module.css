@@ -1,0 +1,50 @@
+/* src/components/ReviewPage/ReviewPage.module.css */
+
+.container {
+    padding: 2rem; /* Uniform padding around the grid container */
+    background-color: #f9f9f9;
+}
+
+h1, h2, h3 {
+    color: #205493; /* USWDS blue for headings, ensuring consistency */
+    margin-bottom: 0.5rem; /* Add a bit of space below each heading */
+}
+
+p {
+    margin: 0.5rem 0; /* Uniform margin for all paragraphs */
+    font-size: 1rem; /* Standard font size for better readability */
+}
+
+.formSection {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #205493; /* Adds a thematic blue border on the left for emphasis */
+}
+
+/* Ensuring that sections align nicely within columns */
+.GridContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Provides space between grid items */
+}
+
+.Grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Aligns items at the start of each grid column */
+}
+
+/* Additional styling for responsive behavior */
+@media (max-width: 768px) {
+    .Grid {
+        flex-direction: column;
+    }
+
+    .formSection {
+        padding: 1rem;
+        margin-top: 1rem; /* More spacing for mobile devices */
+    }
+}

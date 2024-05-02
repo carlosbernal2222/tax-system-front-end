@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Button, TextInput, Label, Grid, GridContainer } from '@trussworks/react-uswds';
-import styles from './SelfEmploymentIncome.module.css';  // Assuming this CSS module exists with styles similar to W2Income
+import styles from './SelfEmploymentIncome.module.css';
 
 interface Form1099 {
     id: string;
@@ -9,7 +9,11 @@ interface Form1099 {
     wages: string;
 }
 
-const SelfEmploymentIncome: React.FC = () => {
+interface SelfEmploymentIncomeProps {
+    taxReturnId: number;
+}
+
+const SelfEmploymentIncome: React.FC<SelfEmploymentIncomeProps> = ({ taxReturnId }) => {
     const [form1099s, setForm1099s] = useState<Form1099[]>([]);
     const [form1099, setForm1099] = useState<Form1099>({
         id: uuidv4(),
@@ -23,6 +27,7 @@ const SelfEmploymentIncome: React.FC = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log("Submitting Form 1099 for Tax Return ID:", taxReturnId, form1099);
         setForm1099s([...form1099s, form1099]);
         setForm1099({
             id: uuidv4(),
