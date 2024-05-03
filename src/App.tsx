@@ -11,7 +11,7 @@ import W2Income from "./Pages/Incomes/W2Income.tsx";
 import SelfEmploymentIncome from "./Pages/Incomes/SelfEmploymentIncome.tsx";
 import ResultsPage from "./Pages/ReviewPage/ReviewPage.tsx";
 import ReviewPage from "./Pages/ReviewPage/ReviewPage.tsx";
-
+import ProfilePage from "./Pages/ProfilePage/ProfilePage.tsx";
 function App() {
 
   return (
@@ -20,6 +20,7 @@ function App() {
               {/*Main Routes*/}
               <Route path="/" element={<Layout/>}>
                 <Route index element={<LandingPage/>}/>
+                <Route path={"edit-profile"} element={<ProfilePage/>}/>
                 <Route path="dashboard" element={<Dashboard/>}/>
                 <Route path="tax-filing/:taxReturnId" element={<TaxFilingPage/>}>
                     <Route path="personal-information" element={<PersonalInformation/>}/>
