@@ -66,17 +66,42 @@ const Dashboard: React.FC = () => {
     };
 
     const handleStartNewFiling = async () => {
-        const newFiling: TaxFiling = {
-            id: filings.length + 1,
-            year: new Date().getFullYear(),
-            completed: false,
-            totalRefundDue: null,
-        };
+        if (personIdRef.current === null) {
+            console.error('No person ID available');
+            return; // Exit the function if there is no person ID
+        }
 
-        setFilings([...filings, newFiling]);
-        navigate(`/tax-filing/${newFiling.id}/personal-information`);
+        try {
+            const newTaxReturn = {
+                year: new Date().getFullYear(),
+                completed: false,
+                totalRefundDue: null
+            };
+
+            const response = await fetch(`http://localhost:8080/returns/${personIdRef.current}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include', // if needed for session/cookie-based authentication
+                body: JSON.stringify(newTaxReturn)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create new tax filing');
+            }
+
+            const createdFiling = await response.json();
+
+            // Navigate to the personal information page with the new filing ID
+            navigate(`/tax-filing/${createdFiling.id}/personal-information`);
+
+        } catch (error) {
+            console.error('Error creating new tax filing:', error);
+        }
     };
-    
+
+
     const handleContinueFiling = (id: number) => {
         console.log(`Continuing filing for ID ${id}`);
         navigate(`/tax-filing/${id}/personal-information`);
@@ -85,9 +110,10 @@ const Dashboard: React.FC = () => {
     return (
         <div className={styles.dashboardContainer}>
             <h1 className={styles.header}>Tax Filings Dashboard</h1>
-            <Button type="button" onClick={handleStartNewFiling} className={`usa-button ${styles.buttonNewFiling}`}>
+            <Button type="button" onClick={handleStartNewFiling} className={`usa-button ${styles.buttonNewFiling}`} disabled={personIdRef.current === null}>
                 Start New Filing
             </Button>
+
             <GridContainer className={styles.cardContainer}>
                 <Grid row gap>
                     {filings.length > 0 ? filings.map((filing) => (
