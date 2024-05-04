@@ -39,15 +39,37 @@ const Dashboard: React.FC = () => {
     }, []);
 
     const handleStartNewFiling = async () => {
-        const newFiling: TaxFiling = {
-            id: filings.length + 1,
-            year: new Date().getFullYear(),
-            completed: false,
-            totalRefundDue: null,
-        };
+        try {
 
-        setFilings([...filings, newFiling]);
-        navigate(`/tax-filing/${newFiling.id}/personal-information`);
+            const personId = 1; // Hard-coded for now, replace with actual dynamic value
+
+            const newTaxReturn = {
+                year: new Date().getFullYear(),
+                completed: false,
+                totalRefundDue: null
+            };
+
+            const response = await fetch(`http://localhost:8080/returns/${personId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include', // if needed for session/cookie-based authentication
+                body: JSON.stringify(newTaxReturn)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create new tax filing');
+            }
+
+            const createdFiling = await response.json();
+
+            // Assuming the created object returns an ID that you can use to navigate
+            navigate(`/tax-filing/${createdFiling.id}/personal-information`);
+
+        } catch (error) {
+            console.error('Error creating new tax filing:', error);
+        }
     };
     
     const handleContinueFiling = (id: number) => {
