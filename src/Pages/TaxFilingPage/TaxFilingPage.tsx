@@ -9,7 +9,8 @@ import ReviewPage from '../ReviewPage/ReviewPage';
 import ResultPage from '../ResultsPage/ResultsPage';
 
 const TaxFilingPage: React.FC = () => {
-    const { taxReturnId } = useParams(); // Get tax return ID from the URL
+    const { id } = useParams(); // Get tax return ID from the URL
+    const taxReturnId:number = Number(id);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -18,7 +19,7 @@ const TaxFilingPage: React.FC = () => {
         { path: 'w2-income', component: <W2Income taxReturnId={taxReturnId} />, label: 'W2 Income' },
         { path: 'self-employment-income', component: <SelfEmploymentIncome taxReturnId={taxReturnId} />, label: 'Self Employment Income' },
         { path: 'review', component: <ReviewPage taxReturnId={taxReturnId} />, label: 'Review' },
-        { path: 'result', component: <ResultPage taxReturnId={taxReturnId} />, label: 'Result' }
+        { path: 'result', component: <ResultPage  />, label: 'Result' }
     ];
 
     const currentStepIndex = steps.findIndex(step => location.pathname.includes(step.path));
