@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardHeader, CardBody } from '@trussworks/react-uswds';
 
+
 const ResultsPage: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
