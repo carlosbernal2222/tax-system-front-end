@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridContainer } from '@trussworks/react-uswds';
 import styles from './Dashboard.module.css';
 import { useNavigate } from "react-router-dom";
@@ -13,12 +13,12 @@ interface TaxFiling {
 const Dashboard: React.FC = () => {
     const [filings, setFilings] = useState<TaxFiling[]>([]);
     const navigate = useNavigate();
+    const personIdRef = useRef<number | null>(null); //refernce to person id
 
     useEffect(() => {
-        const fetchTaxFilings = async () => {
-            try {
-                //Here I need to access the person id that is associated with the logged in user and pass it to the URL
-                const response = await fetch('http://localhost:8080/persons/1/tax-returns',  {
+        const fetchPersonId = async () => {
+            try { //call to retrieve person for token
+                const response = await fetch('http://localhost:8080/persons/tokenPerson', {
                     credentials: 'include',
                     method: 'GET',
                     headers: {
@@ -26,50 +26,55 @@ const Dashboard: React.FC = () => {
                     }
                 });
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Failed to fetch person ID');
                 }
                 const data = await response.json();
-                setFilings(data);  // Set state with fetched data
+                personIdRef.current = data.id; // Assuming your response contains the person ID
+                console.log('Person ID:', personIdRef.current);
+
+                // Call fetchTaxFilings after setting personIdRef.current
+                fetchTaxFilings();
             } catch (error) {
-                console.error('Error fetching persons TaxFilings', error);
+                console.error('Error fetching person ID:', error);
             }
         };
 
-        fetchTaxFilings();
+        fetchPersonId();
     }, []);
 
-    const handleStartNewFiling = async () => {
+    const fetchTaxFilings = async () => {
         try {
-
-            const personId = 1; // Hard-coded for now, replace with actual dynamic value
-
-            const newTaxReturn = {
-                year: new Date().getFullYear(),
-                completed: false,
-                totalRefundDue: null
-            };
-
-            const response = await fetch(`http://localhost:8080/returns/${personId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include', // if needed for session/cookie-based authentication
-                body: JSON.stringify(newTaxReturn)
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to create new tax filing');
+            if (personIdRef.current !== null) {
+                const response = await fetch(`http://localhost:8080/persons/${personIdRef.current}/tax-returns`, {
+                    credentials: 'include',
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch tax filings');
+                }
+                const data = await response.json();
+                setFilings(data);  // Set state with fetched data
+            } else {
+                console.log('Person ID is not available yet');
             }
-
-            const createdFiling = await response.json();
-
-            // Assuming the created object returns an ID that you can use to navigate
-            navigate(`/tax-filing/${createdFiling.id}/personal-information`);
-
         } catch (error) {
-            console.error('Error creating new tax filing:', error);
+            console.error('Error fetching tax filings:', error);
         }
+    };
+
+    const handleStartNewFiling = async () => {
+        const newFiling: TaxFiling = {
+            id: filings.length + 1,
+            year: new Date().getFullYear(),
+            completed: false,
+            totalRefundDue: null,
+        };
+
+        setFilings([...filings, newFiling]);
+        navigate(`/tax-filing/${newFiling.id}/personal-information`);
     };
     
     const handleContinueFiling = (id: number) => {
