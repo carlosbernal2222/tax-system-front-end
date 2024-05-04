@@ -29,6 +29,11 @@ const HeaderComponent: React.FC = () => {
     <a href="/about" key="two">{t('About')}</a>
   ];
 
+  const handleLogin = () => {
+    window.location.replace("http://localhost:8080/users/signin");
+    console.log("We signed in!");
+  };
+
   const itemsMenu = [
     <>
       <NavDropDownButton
@@ -41,7 +46,7 @@ const HeaderComponent: React.FC = () => {
       />
       <Menu key="menu1" items={menuItems} isOpen={isOpen[0]} id="dropDownOne" />
     </>,
-    <Link key="one" to="/login" className="usa-nav__link">
+    <Link key="one" to="/login" className="usa-nav__link" onClick={handleLogin}>
       <span>{t('Log In')}</span>
     </Link>,
     <Link key="user-edit" to="/user-edit" className="usa-nav__link">
@@ -71,3 +76,4 @@ const HeaderComponent: React.FC = () => {
 };
 
 export default HeaderComponent;
+
