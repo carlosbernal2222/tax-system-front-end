@@ -38,10 +38,19 @@ const Dashboard: React.FC = () => {
                 console.error('Error fetching person ID:', error);
             }
         };
-
         fetchPersonId();
     }, []);
 
+    /**
+     * Asynchronously fetches tax filings for a person.
+     *
+     * This function first checks if a person ID is available. If not, it logs a message and exits.
+     * If a person ID is available, it makes a GET request to the server to fetch the tax returns for the person with the given ID.
+     * If the request is successful, it updates the state with the fetched data.
+     * If the request fails, it logs an error.
+     *
+     * @async
+     */
     const fetchTaxFilings = async () => {
         try {
             if (personIdRef.current !== null) {
@@ -65,6 +74,19 @@ const Dashboard: React.FC = () => {
         }
     };
 
+    /**
+     * Asynchronously starts a new tax filing.
+     *
+     * This function first checks if a person ID is available. If not, it logs an error and exits.
+     * If a person ID is available, it creates a new tax return object with the current year,
+     * sets the completed status to false, and totalRefundDue to null.
+     *
+     * It then makes a POST request to the server to create a new tax return for the person with the given ID.
+     * If the request is successful, it navigates to the personal information page with the new filing ID.
+     * If the request fails, it logs an error.
+     *
+     * @async
+     */
     const handleStartNewFiling = async () => {
         if (personIdRef.current === null) {
             console.error('No person ID available');
@@ -110,7 +132,7 @@ const Dashboard: React.FC = () => {
     return (
         <div className={styles.dashboardContainer}>
             <h1 className={styles.header}>Tax Filings Dashboard</h1>
-            <Button type="button" onClick={handleStartNewFiling} className={`usa-button ${styles.buttonNewFiling}`} disabled={personIdRef.current === null}>
+            <Button type="button" onClick={handleStartNewFiling} className={`usa-button ${styles.buttonNewFiling}`}>
                 Start New Filing
             </Button>
 
