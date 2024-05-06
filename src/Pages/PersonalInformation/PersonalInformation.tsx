@@ -1,34 +1,95 @@
-import React, { useState } from 'react';
-import { Button, TextInput, Label, Grid, GridContainer } from '@trussworks/react-uswds';
-import styles from './PersonalInformation.module.css'; // Ensure this CSS module is correctly linked for styling
 
-// Define a TypeScript interface for props
+import React, { useEffect, useState } from 'react';
+import { Button, TextInput, Label, Grid, GridContainer, Alert } from '@trussworks/react-uswds';
+import styles from './PersonalInformation.module.css';
+
 interface PersonalInformationProps {
     taxReturnId: number;
 }
 
+interface Person {
+    id?: number;
+    ssn: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    address: string;
+    phoneNumber: string;
+}
+
 const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }) => {
-    const [person, setPerson] = useState({
+    const [person, setPerson] = useState<Person>({
+        ssn: '',
         firstName: '',
         middleName: '',
         lastName: '',
-        ssn: '',
         address: '',
         phoneNumber: ''
     });
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+    // Fetch person data on mount
+    useEffect(() => {
+        const fetchPersonData = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/persons/${taxReturnId}/person`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch person data');
+                }
+                const data: Person = await response.json();
+                setPerson(data);
+            } catch (error) {
+                console.error('Error fetching person data:', error);
+            }
+        };
+        fetchPersonData();
+    }, [taxReturnId]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPerson({ ...person, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Submitting Personal Information for Tax Return ID:", taxReturnId, person);
-        // Here you might want to call an API or handle the data in some way, including the taxReturnId
+        if (!person.id) {
+            console.error('No person ID available for update');
+            return;
+        }
+        try {
+            const response = await fetch(`http://localhost:8080/persons/person/${person.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(person)
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update person data');
+            }
+            console.log("Personal information updated successfully!");
+            setShowSuccessMessage(true);
+            setTimeout(() => setShowSuccessMessage(false), 5000); // hide success message after 5 seconds
+        } catch (error) {
+            console.error('Error updating personal information:', error);
+        }
     };
+
+    console.log(person);
 
     return (
         <div className={styles.container}>
+            {showSuccessMessage && (
+                <Alert type="success" className="margin-bottom-4" headingLevel={"h2"}>
+                    Personal information updated successfully!
+                </Alert>
+            )}
             <form onSubmit={handleSubmit}>
                 <GridContainer className={styles.formGrid}>
                     <Grid row gap>
@@ -56,7 +117,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
                         </Grid>
                         <Grid col={4}>
                             <Label htmlFor="phoneNumber">Phone Number</Label>
-                            <TextInput id="telephone" name="telephone" type="tel" value={person.phoneNumber} onChange={handleChange} />
+                            <TextInput id="telephone" name="phoneNumber" type="tel" value={person.phoneNumber} onChange={handleChange} />
                         </Grid>
                     </Grid>
                 </GridContainer>
