@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import CreateW2Form from '../../Components/Forms/CreateW2Form.tsx';
 import W2List from '../../Components/FormLists/W2List.tsx';
+import { Grid, GridContainer, Alert } from '@trussworks/react-uswds';
+import styles from './W2Income.module.css';
 
 interface W2IncomeProps {
     taxReturnId: number;
@@ -18,6 +20,7 @@ interface FormW2 {
 
 const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
     const [refresh, setRefresh] = useState<boolean>(false); // State to trigger refresh
+    const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
     const handleCreateForm = async (form: FormW2) => {
         try {
@@ -39,20 +42,28 @@ const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
 
             const result = await response.json();
             console.log('Form created successfully:', result);
-            alert('W2 form created successfully!');
+            setAlert({ type: 'success', message: 'W2 form created successfully!' });
+            setTimeout(() => setAlert(null), 5000);
             setRefresh(!refresh); // Toggle refresh state to trigger an update in the W2 list
         } catch (error) {
             console.error('Error creating W2 form:', error);
-            alert('Error creating W2 form. Please try again.');
+            setAlert({ type: 'error', message: 'Error creating W2 form. Please try again.' });
         }
     };
 
     return (
-        <div>
-            <h2>W2 Income for Tax Return ID: {taxReturnId}</h2>
-            <CreateW2Form taxReturnId={taxReturnId} onCreate={handleCreateForm} />
-            <W2List taxReturnId={taxReturnId} refresh={refresh} />
-        </div>
+        <GridContainer className={styles.container}>
+            <div className={styles.header}>W2 Income for Tax Return ID: {taxReturnId}</div>
+            {alert && <Alert headingLevel={"h2"} type={alert.type} role="alert">{alert.message}</Alert>}
+            <Grid row gap className={styles.grid}>
+                <Grid col={12} tablet={{ col: 8 }} className={styles.formContainer}>
+                    <CreateW2Form taxReturnId={taxReturnId} onCreate={handleCreateForm} />
+                </Grid>
+                <Grid col={12} tablet={{ col: 12 }} className={styles.listContainer}>
+                    <W2List taxReturnId={taxReturnId} refresh={refresh} />
+                </Grid>
+            </Grid>
+        </GridContainer>
     );
 };
 

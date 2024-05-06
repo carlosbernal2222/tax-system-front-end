@@ -1,15 +1,13 @@
 
-.formGroup {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 8px;
-    align-items: center;
-    margin-bottom: 16px;
+
+.fullWidthContainer {
+    width: 100%;
+    max-width: none; /* Overrides any max-width set by USWDS */
 }
 
-.taxGroup {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+.submitButtonContainer {
+    align-self: flex-end;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }

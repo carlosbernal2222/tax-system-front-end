@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Create1099Form from '../../Components/Forms/Create1099Form.tsx';
 import Form1099List from "../../Components/FormLists/Form1099List.tsx";
+import { Alert, Grid, GridContainer } from "@trussworks/react-uswds";
+import styles from './SelfEmploymentIncome.module.css';
 
 interface SelfEmploymentIncomeProps {
     taxReturnId: number;
@@ -10,12 +12,12 @@ interface Form1099 {
     year: number;
     wages: number;
     payer: string;
-    taxReturnId?: number;  // Foreign key to TaxReturn, assuming you need this in the frontend for linking
+    taxReturnId?: number;
 }
-
 
 const SelfEmploymentIncome: React.FC<SelfEmploymentIncomeProps> = ({ taxReturnId }) => {
     const [refresh, setRefresh] = useState(false);
+    const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
     const handleCreateForm = async (form: Form1099) => {
         try {
@@ -36,20 +38,28 @@ const SelfEmploymentIncome: React.FC<SelfEmploymentIncomeProps> = ({ taxReturnId
             }
 
             await response.json();
-            alert('Form 1099 created successfully!');
+            setAlert({ type: 'success', message: 'Form 1099 created successfully!' });
+            setTimeout(() => setAlert(null), 5000);
             setRefresh(!refresh); // Trigger a refresh of the list
         } catch (error) {
             console.error('Error creating Form 1099:', error);
-            alert('Error creating Form 1099. Please try again.');
+            setAlert({ type: 'error', message: 'Error creating Form 1099. Please try again.' });
         }
     };
 
     return (
-        <div>
-            <h2>Self Employment Income for Tax Return ID: {taxReturnId}</h2>
-            <Create1099Form taxReturnId={taxReturnId} onCreate={handleCreateForm} />
-            <Form1099List taxReturnId={taxReturnId} refresh={refresh} />
-        </div>
+        <GridContainer className={styles.container}>
+            <div className={styles.header}>Self Employment Income for Tax Return ID: {taxReturnId}</div>
+            {alert && <Alert headingLevel={"h2"} type={alert.type} role="alert">{alert.message}</Alert>}
+            <Grid row gap className={styles.grid}>
+                <Grid col={12} tablet={{ col: 8 }} className={styles.formContainer}>
+                    <Create1099Form taxReturnId={taxReturnId} onCreate={handleCreateForm} />
+                </Grid>
+                <Grid col={12} tablet={{ col: 12 }} className={styles.listContainer}>
+                    <Form1099List taxReturnId={taxReturnId} refresh={refresh} />
+                </Grid>
+            </Grid>
+        </GridContainer>
     );
 };
 

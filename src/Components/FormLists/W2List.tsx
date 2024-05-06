@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Button, Table} from '@trussworks/react-uswds';
+import {Button, Grid, GridContainer, Table} from '@trussworks/react-uswds';
 
 interface W2ListProps {
     taxReturnId: number;
@@ -58,39 +58,39 @@ const W2List: React.FC<W2ListProps> = ({ taxReturnId,refresh }) => {
 
 
     return (
-        <div>
+        <GridContainer>
             <h3>W2 Forms List</h3>
-            {w2Forms.length > 0 ? (
-                <Table fullWidth>
-                    <thead>
-                    <tr>
-                        <th>Year</th>
-                        <th>Wages</th>
-                        <th>Federal Tax Withheld</th>
-                        <th>Social Security Withheld</th>
-                        <th>Medicare Withheld</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {w2Forms.map(form => (
-                        <tr key={form.id}>
-                            <td>{form.year}</td>
-                            <td>{form.wages}</td>
-                            <td>{form.federalIncomeTaxWithheld}</td>
-                            <td>{form.socialSecurityTaxWithheld}</td>
-                            <td>{form.medicareTaxWithheld}</td>
-                            <td>
-                                <Button onClick={() => handleDelete(form.id)} secondary type="button">Delete</Button>
-                            </td>
+            <Grid row>
+                <Grid col={12}>
+                    <Table fullWidth>
+                        <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Wages</th>
+                            <th>Federal Tax Withheld</th>
+                            <th>Social Security Withheld</th>
+                            <th>Medicare Withheld</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </Table>
-            ) : (
-                <p>No W2 Forms found for this tax return.</p>
-            )}
-        </div>
+                        </thead>
+                        <tbody>
+                        {w2Forms.map(form => (
+                            <tr key={form.id}>
+                                <td>{form.year}</td>
+                                <td>{form.wages}</td>
+                                <td>{form.federalIncomeTaxWithheld}</td>
+                                <td>{form.socialSecurityTaxWithheld}</td>
+                                <td>{form.medicareTaxWithheld}</td>
+                                <td>
+                                    <Button onClick={() => handleDelete(form.id)} secondary type="button">Delete</Button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
+                </Grid>
+            </Grid>
+        </GridContainer>
     );
 };
 

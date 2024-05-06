@@ -1,83 +1,41 @@
-/* src/components/W2Income/W2Income.module.css */
-
+/* W2Income.module.css */
 .container {
     padding: 2rem;
-    padding-top: 0;
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; /* Light grey background for modern look */
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3); /* Soft shadow for depth */
+    margin-bottom: 20px;
+    display: flex; /* Enables flexbox */
+    flex-direction: column; /* Stacks children vertically */
+    align-items: center; /* Center-aligns children horizontally */
+    justify-content: center; /* Center-aligns children vertically if needed */
 }
 
-.formGrid {
-    margin-top: 1rem;
-}
-
-.inputField {
-    margin-bottom: 1rem;
-}
-
-.label {
-    display: block;
-    margin-bottom: 0.5rem;
+.header {
+    font-size: 24px;
     color: #333;
-    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center; /* Centers the header text */
 }
 
-.input {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.grid {
+    margin-top: 1rem;
+    width: 100%; /* Ensures the grid takes full width */
 }
 
-.buttonContainer{
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.buttonSubmit:hover {
-    background-color: #205493;
+.formContainer {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    width: 100%; /* Full width to match parent container */
 }
 
 .listContainer {
+    background-color: white;
     padding: 1rem;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    margin-top: 20px;
-}
-
-.listItem {
-    padding: 0.5rem;
-    border-bottom: 1px solid #eee;
-}
-
-.lastItem {
-    border-bottom: none;
-}
-
-.actionButton {
-    background-color: #e7e7e7; /* Light gray background for differentiation */
-    color: #333; /* Dark text color for visibility */
-    padding: 5px 10px;
-    margin-left: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.875rem; /* Smaller font size for action buttons */
-    transition: background-color 0.3s;
-}
-
-.actionButton:hover {
-    background-color: #d6d6d6; /* Slightly darker on hover for feedback */
-}
-
-.actionButton.delete {
-    background-color: #d9534f; /* Red background for delete button */
-    color: white;
-}
-
-.actionButton.delete:hover {
-    background-color: #c12e2a; /* Darker red on hover */
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    width: 100%; /* Full width to match parent container */
 }

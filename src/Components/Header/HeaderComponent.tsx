@@ -49,9 +49,6 @@ const HeaderComponent: React.FC = () => {
     <Link key="one" to="/login" className="usa-nav__link" onClick={handleLogin}>
       <span>{t('Log In')}</span>
     </Link>,
-    <Link key="user-edit" to="/user-edit" className="usa-nav__link">
-      <i className="fa fa-user" aria-hidden="true"></i><span> {t('Edit Profile')}</span>
-    </Link>,
     <Link key={"dashboard"} to="/dashboard" className="usa-nav__link">
       <i className="fa fa-tachometer" aria-hidden="true"></i><span> {t('Dashboard')}</span>
     </Link>,
