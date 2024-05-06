@@ -9,7 +9,7 @@ interface SelfEmploymentIncomeProps {
 interface Form1099 {
     year: number;
     wages: number;
-    client: string;
+    payer: string;
     taxReturnId?: number;  // Foreign key to TaxReturn, assuming you need this in the frontend for linking
 }
 

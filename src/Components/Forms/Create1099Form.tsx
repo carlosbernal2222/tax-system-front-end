@@ -10,12 +10,12 @@ interface Form1099 {
     taxReturnId?: number;
     year: number;
     wages: number;
-    client: string;
+    payer: string;
 }
 
 const Create1099Form: React.FC<Create1099FormProps> = ({ taxReturnId, onCreate }) => {
     const [form1099, setForm1099] = useState<Form1099>({
-        client: '',
+        payer: '',
         year: new Date().getFullYear(),
         wages: 0,
     });
@@ -35,8 +35,8 @@ const Create1099Form: React.FC<Create1099FormProps> = ({ taxReturnId, onCreate }
     return (
         <Form onSubmit={handleSubmit}>
             <FormGroup>
-                <Label htmlFor="client">Client</Label>
-                <TextInput id="client" name="client" type="text" value={form1099.client.toString()} onChange={handleChange} required />
+                <Label htmlFor="payer">Payer</Label>
+                <TextInput id="payer" name="payer" type="text" value={form1099.payer.toString()} onChange={handleChange} required />
             </FormGroup>
             <FormGroup>
                 <Label htmlFor="year">Year</Label>

@@ -5,7 +5,7 @@ interface Form1099 {
     id: number;
     year: number;
     wages: number;
-    client: string;
+    payer: string;
 }
 
 interface Form1099ListProps {
@@ -59,7 +59,7 @@ const Form1099List: React.FC<Form1099ListProps> = ({ taxReturnId, refresh }) => 
                 <Table fullWidth>
                     <thead>
                     <tr>
-                        <th>Client</th>
+                        <th>Payer</th>
                         <th>Year</th>
                         <th>Wages</th>
                         <th>Actions</th>
@@ -68,7 +68,7 @@ const Form1099List: React.FC<Form1099ListProps> = ({ taxReturnId, refresh }) => 
                     <tbody>
                     {form1099s.map(form => (
                         <tr key={form.id}>
-                            <td>{form.client}</td>
+                            <td>{form.payer}</td>
                             <td>{form.year}</td>
                             <td>{form.wages}</td>
                             <td>
