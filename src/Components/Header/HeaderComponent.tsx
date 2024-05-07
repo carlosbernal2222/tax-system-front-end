@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Header, Title, NavMenuButton, PrimaryNav, Menu, NavDropDownButton } from '@trussworks/react-uswds';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,8 @@ const HeaderComponent: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const onClick = (): void => setExpanded(prevExpanded => !prevExpanded);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
+
 
   const [isOpen, setIsOpen] = useState([false, false]);
   const handleToggle = (index: number) => {
@@ -16,6 +18,10 @@ const HeaderComponent: React.FC = () => {
       return newIsOpen;
     });
   };
+
+  useEffect(() => {
+    console.log("isLoggedIn changed:", isLoggedIn);
+  }, [isLoggedIn]);
 
   const toggleLanguage = () => {
     const newLang = i18n.language.startsWith('es') ? 'en' : 'es';
@@ -29,10 +35,18 @@ const HeaderComponent: React.FC = () => {
     <a href="/about" key="two">{t('About')}</a>
   ];
 
+  
   const handleLogin = () => {
+    // Check if the timeout is already set
+    if (!localStorage.getItem('isLoggedInTimeout')) {
+        setIsLoggedIn(true);
+        localStorage.setItem('isLoggedIn', 'true');
+    }
+
     window.location.replace("http://localhost:8080/users/signin");
-    console.log("We signed in!");
-  };
+};
+
+
 
   const itemsMenu = [
     <>
@@ -46,12 +60,15 @@ const HeaderComponent: React.FC = () => {
       />
       <Menu key="menu1" items={menuItems} isOpen={isOpen[0]} id="dropDownOne" />
     </>,
-    <Link key="one" to="/login" className="usa-nav__link" onClick={handleLogin}>
-      <span>{t('Log In')}</span>
-    </Link>,
-    <Link key={"dashboard"} to="/dashboard" className="usa-nav__link">
-      <i className="fa fa-tachometer" aria-hidden="true"></i><span> {t('Dashboard')}</span>
-    </Link>,
+    isLoggedIn && (
+      <Link key={"dashboard"} to="/dashboard" className="usa-nav__link">
+        <i className="fa fa-tachometer" aria-hidden="true"></i><span> {t('Dashboard')}</span>
+      </Link>
+    ),
+      <Link key="one" to="" className="usa-nav__link" onClick={handleLogin}>
+        <span>{t('Log In')}</span>
+      </Link>
+    ,
     <button onClick={toggleLanguage}>{currentLangLabel}</button>, // Button to toggle language
   ];
 
