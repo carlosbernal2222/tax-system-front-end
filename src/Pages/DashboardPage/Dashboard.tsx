@@ -129,6 +129,13 @@ const Dashboard: React.FC = () => {
         navigate(`/tax-filing/${id}/personal-information`);
     };
 
+    const displayTaxInfo = (filing: TaxFiling) => {
+        const refundDue = filing.totalRefundDue;
+        if (refundDue === null) return "Not Calculated";
+        if (refundDue >= 0) return `Tax Due: $${Math.abs(refundDue).toFixed(2)}`;
+        return `Tax Refund: $${Math.abs(refundDue).toFixed(2)}`;
+    };
+
     return (
         <div className={styles.dashboardContainer}>
             <h1 className={styles.header}>Tax Filings Dashboard</h1>
@@ -147,7 +154,7 @@ const Dashboard: React.FC = () => {
                                 <CardBody>
                                     <p>Year: {filing.year}</p>
                                     <p>Status: {filing.completed ? "Completed" : "In Progress"}</p>
-                                    <p>Refund Due: {filing.totalRefundDue !== null ? `$${filing.totalRefundDue}` : "Not Calculated"}</p>
+                                    <p>{displayTaxInfo(filing)}</p>
                                 </CardBody>
                                 <CardFooter>
                                     {!filing.completed && (

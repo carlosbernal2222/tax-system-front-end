@@ -18,6 +18,7 @@ interface Person{
 }
 
 interface FormW2{
+    id: number;
     employer: Employer;
     year: number;
     wages: number;
@@ -26,6 +27,7 @@ interface FormW2{
     medicareTaxWithheld: number;
 }
 interface Form1099{
+    id: number;
     payer: string;
     wages: number;
     year: number;
@@ -125,6 +127,13 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
         }
     };
 
+    const handleFormClick = (formType: 'W2' | '1099', formIndex: number) => {
+        console.log(formIndex);
+        const route = formType === 'W2'
+            ? `/tax-filing/${taxReturnId}/w2-income`
+            : `/tax-filing/${taxReturnId}/self-employment-income`;
+        navigate(route);
+    };
 
     return (
         <GridContainer className={styles.container}>
@@ -149,7 +158,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
                 <Grid col={6}>
                     <h2>W2 Forms</h2>
                     {formW2s.length > 0 ? formW2s.map((w2, index) => (
-                        <div key={index} className={styles.formSection}>
+                        <div key={w2.id} className={styles.formSection} onClick={() => handleFormClick('W2', index)}>
                             <h3>W2 from {w2.employer.name}</h3>
                             <p><strong>Wages:</strong> ${w2.wages.toLocaleString()}</p>
                             <p><strong>Federal Income Tax Withheld:</strong> ${w2.federalIncomeTaxWithheld.toLocaleString()}</p>
@@ -161,7 +170,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
                 <Grid col={6}>
                     <h2>1099 Forms</h2>
                     {form1099s.length > 0 ? form1099s.map((form1099, index) => (
-                        <div key={index} className={styles.formSection}>
+                        <div key={form1099.id} className={styles.formSection} onClick={() => handleFormClick('1099', index)}>
                             <h3>1099 from {form1099.payer}</h3>
                             <p><strong>Amount:</strong> ${form1099.wages.toLocaleString()}</p>
                             <p><strong>Year:</strong> {form1099.year}</p>
