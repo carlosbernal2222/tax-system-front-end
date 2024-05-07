@@ -21,14 +21,18 @@ const Create1099Form: React.FC<Create1099FormProps> = ({ taxReturnId, onCreate }
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm1099({ ...form1099, [e.target.name]: parseFloat(e.target.value) });
+        const { name, value, type } = e.target;
+        setForm1099({
+            ...form1099,
+            [name]: type === 'number' ? parseFloat(value) : value
+        });
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onCreate({
             ...form1099,
-            taxReturnId: taxReturnId,  // Passing taxReturnId as part of the form data if needed
+            taxReturnId: taxReturnId,  // Ensure taxReturnId is passed correctly if required
         });
     };
 
@@ -36,7 +40,7 @@ const Create1099Form: React.FC<Create1099FormProps> = ({ taxReturnId, onCreate }
         <Form onSubmit={handleSubmit}>
             <FormGroup>
                 <Label htmlFor="payer">Payer</Label>
-                <TextInput id="payer" name="payer" type="text" value={form1099.payer.toString()} onChange={handleChange} required />
+                <TextInput id="payer" name="payer" type="text" value={form1099.payer} onChange={handleChange} required />
             </FormGroup>
             <FormGroup>
                 <Label htmlFor="year">Year</Label>

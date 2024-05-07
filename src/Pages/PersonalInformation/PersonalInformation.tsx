@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Button, TextInput, Label, Grid, GridContainer, Alert } from '@trussworks/react-uswds';
+import {Button, TextInput, Label, Grid, GridContainer, Alert, Radio} from '@trussworks/react-uswds';
 import styles from './PersonalInformation.module.css';
 
 interface PersonalInformationProps {
@@ -15,6 +15,15 @@ interface Person {
     lastName: string;
     address: string;
     phoneNumber: string;
+    taxReturns: TaxReturn[];
+}
+
+interface TaxReturn {
+    id: number;
+    year: number;
+    filingStatus: string | null;
+    completed: boolean;
+    totalRefundDue: number | null;
 }
 
 const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }) => {
@@ -24,9 +33,14 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         middleName: '',
         lastName: '',
         address: '',
-        phoneNumber: ''
+        phoneNumber: '',
+        taxReturns: []
     });
+    const [filingStatus, setFilingStatus] = useState<string>('');
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+    console.log(filingStatus)
+    console.log(person)
 
     // Fetch person data on mount
     useEffect(() => {
@@ -44,6 +58,11 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
                 }
                 const data: Person = await response.json();
                 setPerson(data);
+
+                const taxReturn = data.taxReturns.find(tr => tr.id === taxReturnId);
+                if (taxReturn && taxReturn.filingStatus) {
+                    setFilingStatus(taxReturn.filingStatus); // Set the filing status in state
+                }
             } catch (error) {
                 console.error('Error fetching person data:', error);
             }
@@ -51,8 +70,18 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         fetchPersonData();
     }, [taxReturnId]);
 
+    useEffect(() => {
+        if (filingStatus) {  // Make sure there's a filing status selected
+            handleFilingStatusUpdate();
+        }
+    }, [filingStatus]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPerson({ ...person, [e.target.name]: e.target.value });
+        if (e.target.name === 'filingStatus') {
+            setFilingStatus(e.target.value);
+        } else {
+            setPerson({ ...person, [e.target.name]: e.target.value });
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -81,7 +110,31 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         }
     };
 
-    console.log(person);
+    const handleFilingStatusUpdate = async () => {
+        // Create the complete tax return object with the current filing status
+        const taxReturnUpdate = {
+            id: taxReturnId, // Ensure the ID is included if it's required to construct the TaxReturn object
+            filingStatus: filingStatus
+        };
+
+        try {
+            const response = await fetch(`http://localhost:8080/returns/${taxReturnId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(taxReturnUpdate)
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update filing status');
+            }
+            setShowSuccessMessage(true);
+            setTimeout(() => setShowSuccessMessage(false), 5000);
+        } catch (error) {
+            console.error('Error updating filing status:', error);
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -125,6 +178,11 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
                     <Button type="submit" className={styles.buttonSubmit}>Save Personal Information</Button>
                 </div>
             </form>
+            <div className="filing-status-section">
+                <h3>Filing Status</h3>
+                <Radio id="single" name="filingStatus" label="Single" value="Single" checked={filingStatus === "Single"} onChange={handleChange} />
+                <Radio id="jointly" name="filingStatus" label="Jointly" value="Jointly" checked={filingStatus === "Jointly"} onChange={handleChange} />
+            </div>
         </div>
     );
 };

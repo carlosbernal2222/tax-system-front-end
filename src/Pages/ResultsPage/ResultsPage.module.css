@@ -1,5 +1,27 @@
-.card ul, .card li {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+/* resultsPage.module.css */
+.container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 50px auto;
+}
+
+.header {
+    background-color: #f1f1f1;
+    padding: 15px;
+    text-align: center;
+}
+
+.body {
+    padding: 20px;
+    text-align: center;
+}
+
+.amount {
+    font-size: 2em;
+    margin: 20px 0;
+}
+
+.buttonContainer {
+    margin-top: 30px;
+    text-align: center;
 }

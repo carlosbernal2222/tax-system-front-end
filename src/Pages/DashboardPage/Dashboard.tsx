@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridContainer } from '@trussworks/react-uswds';
+import {Button, Card, CardHeader, CardBody, CardFooter, Grid, GridContainer, Alert} from '@trussworks/react-uswds';
 import styles from './Dashboard.module.css';
 import { useNavigate } from "react-router-dom";
 
@@ -159,7 +159,9 @@ const Dashboard: React.FC = () => {
                             </Card>
                         </Grid>
                     )) : (
-                        <p>Loading tax filings...</p>
+                        <div className={styles.alertContainer}>
+                            <Alert type="info" headingLevel={"h2"} className={styles.alertInfo}>No tax filings available.</Alert>
+                        </div>
                     )}
                 </Grid>
             </GridContainer>

@@ -37,16 +37,28 @@
 
 .cardTitle {
     font-size: 1.25rem;
-    color: #323a45; /* Dark gray for better readability */
+    color: #323a45;
 }
 
 .taxCard:hover {
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Additional reset for any nested list elements */
 .taxCard ul, .taxCard li {
     list-style-type: none;
     margin: 0;
     padding: 0;
+}
+
+.alertContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.alertInfo {
+    width: auto;
+    text-align: center;
 }
