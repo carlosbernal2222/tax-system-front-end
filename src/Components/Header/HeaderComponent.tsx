@@ -47,6 +47,18 @@ const HeaderComponent: React.FC = () => {
 };
 
 
+const handleLogout = () => {
+  
+  if (!localStorage.getItem('isLoggedInTimeout')) {
+    setIsLoggedIn(false);
+    localStorage.setItem('isLoggedIn', 'false');
+  }
+
+  window.location.replace("http://localhost:8080/logout");
+};
+
+
+
 
   const itemsMenu = [
     <>
@@ -60,14 +72,22 @@ const HeaderComponent: React.FC = () => {
       />
       <Menu key="menu1" items={menuItems} isOpen={isOpen[0]} id="dropDownOne" />
     </>,
-    isLoggedIn && (
+    isLoggedIn ? (
       <Link key={"dashboard"} to="/dashboard" className="usa-nav__link">
         <i className="fa fa-tachometer" aria-hidden="true"></i><span> {t('Dashboard')}</span>
       </Link>
-    ),
+    ): (
       <Link key="one" to="" className="usa-nav__link" onClick={handleLogin}>
         <span>{t('Log In')}</span>
       </Link>
+    ),
+    isLoggedIn ?(
+    <Link key="one" to="" className="usa-nav__link" onClick={handleLogout}>
+        <span>{t('Log Out')}</span>
+      </Link>
+    ):(
+      <></>
+    )
     ,
     <button onClick={toggleLanguage}>{currentLangLabel}</button>, // Button to toggle language
   ];
