@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import {Button, Card, CardHeader, CardBody, CardFooter, Grid, GridContainer, Alert} from '@trussworks/react-uswds';
 import styles from './Dashboard.module.css';
 import { useNavigate } from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 interface TaxFiling {
     id: number;
@@ -14,6 +15,7 @@ const Dashboard: React.FC = () => {
     const [filings, setFilings] = useState<TaxFiling[]>([]);
     const navigate = useNavigate();
     const personIdRef = useRef<number | null>(null); //refernce to person id
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchPersonId = async () => {
@@ -138,9 +140,9 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className={styles.dashboardContainer}>
-            <h1 className={styles.header}>Tax Filings Dashboard</h1>
+            <h1 className={styles.header}>{t("Tax Filings Dashboard")}</h1>
             <Button type="button" onClick={handleStartNewFiling} className={`usa-button ${styles.buttonNewFiling}`}>
-                Start New Filing
+                {t("Start New Filing")}
             </Button>
 
             <GridContainer className={styles.cardContainer}>
@@ -149,17 +151,17 @@ const Dashboard: React.FC = () => {
                         <Grid col={12} tablet={{ col: 6 }} desktop={{ col: 4 }} key={filing.id}>
                             <Card className={styles.taxCard}>
                                 <CardHeader>
-                                    <h2 className={styles.cardTitle}>Filing ID: {filing.id}</h2>
+                                    <h2 className={styles.cardTitle}>{t("Filing ID")}: {filing.id}</h2>
                                 </CardHeader>
                                 <CardBody>
-                                    <p>Year: {filing.year}</p>
-                                    <p>Status: {filing.completed ? "Completed" : "In Progress"}</p>
+                                    <p>{t("Year")}: {filing.year}</p>
+                                    <p>{t("Status")}: {filing.completed ? t("Completed") : t("In Progress")}</p>
                                     <p>{displayTaxInfo(filing)}</p>
                                 </CardBody>
                                 <CardFooter>
                                     {!filing.completed && (
                                         <Button type="button" onClick={() => handleContinueFiling(filing.id)} className="usa-button usa-button--secondary">
-                                            Continue Filing
+                                            {t("Continue Filing")}
                                         </Button>
                                     )}
                                 </CardFooter>
@@ -167,7 +169,7 @@ const Dashboard: React.FC = () => {
                         </Grid>
                     )) : (
                         <div className={styles.alertContainer}>
-                            <Alert type="info" headingLevel={"h2"} className={styles.alertInfo}>No tax filings available.</Alert>
+                            <Alert type="info" headingLevel={"h2"} className={styles.alertInfo}>{t("No tax filings available.")}</Alert>
                         </div>
                     )}
                 </Grid>

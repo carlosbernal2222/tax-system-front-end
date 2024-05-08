@@ -1,6 +1,7 @@
 
 import React from 'react';
 import {Routes, Route, useLocation, useNavigate, useParams} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 import styles from './TaxFilingPage.module.css';
 import PersonalInformation from '../PersonalInformation/PersonalInformation';
 import W2Income from '../Incomes/W2Income';
@@ -13,6 +14,7 @@ const TaxFilingPage: React.FC = () => {
     const taxReturnId:number = Number(id);
     const navigate = useNavigate();
     const location = useLocation();
+    const { t } = useTranslation();
 
     const steps = [
         { path: 'personal-information', component: <PersonalInformation taxReturnId={taxReturnId} />, label: 'Personal Information' },
@@ -39,7 +41,7 @@ const TaxFilingPage: React.FC = () => {
 
     return (
         <div className={styles.taxFilingContainer}>
-            <h1>Tax Filing</h1>
+            <h1>{t('Tax Filing')}</h1>
             <div className={styles.stepIndicator} aria-label="progress">
                 <ol className="usa-step-indicator__segments">
                     {steps.map((step, index) => (
@@ -48,7 +50,7 @@ const TaxFilingPage: React.FC = () => {
                             aria-current={index === currentStepIndex ? "true" : undefined}>
                             <span className="usa-step-indicator__segment-label">
                                 {step.label}
-                                <span className="usa-sr-only">{index <= currentStepIndex ? 'completed' : 'not completed'}</span>
+                                <span className="usa-sr-only">{index <= currentStepIndex ? t('completed') : t('not completed')}</span>
                             </span>
                         </li>
                     ))}
@@ -56,9 +58,9 @@ const TaxFilingPage: React.FC = () => {
                 <div className="usa-step-indicator__header">
                     <h4 className="usa-step-indicator__heading">
                         <span className="usa-step-indicator__heading-counter">
-                            <span className="usa-sr-only">Step</span>
+                            <span className="usa-sr-only">{t('Step')}</span>
                             <span className="usa-step-indicator__current-step">{currentStepIndex + 1}</span>
-                            <span className="usa-step-indicator__total-steps">of {steps.length}</span>
+                            <span className="usa-step-indicator__total-steps">{t('of')} {steps.length}</span>
                         </span>
                         <span className="usa-step-indicator__heading-text">{steps[currentStepIndex].label}</span>
                     </h4>
@@ -68,14 +70,14 @@ const TaxFilingPage: React.FC = () => {
                 {steps.map((step, index) => (
                     <Route key={index} path={step.path} element={step.component} />
                 ))}
-                <Route index element={<PersonalInformation />} />
+                <Route index element={<PersonalInformation taxReturnId={taxReturnId}/>} />
             </Routes>
             <div className="navigation-buttons">
                 {currentStepIndex > 0 && (
-                    <button onClick={goToPreviousStep} className="usa-button">Back</button>
+                    <button onClick={goToPreviousStep} className="usa-button">{t('Back')}</button>
                 )}
-                {currentStepIndex < steps.length - 2 && (  // Adjust condition to hide 'Next' button on review step
-                    <button onClick={goToNextStep} className="usa-button">Next</button>
+                {currentStepIndex < steps.length - 2 && (
+                    <button onClick={goToNextStep} className="usa-button">{t('Next')}</button>
                 )}
             </div>
         </div>

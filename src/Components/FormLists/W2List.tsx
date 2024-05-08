@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Button, Grid, GridContainer, Table} from '@trussworks/react-uswds';
+import {useTranslation} from 'react-i18next';
 
 interface W2ListProps {
     taxReturnId: number;
@@ -18,6 +19,7 @@ interface FormW2 {
 
 const W2List: React.FC<W2ListProps> = ({ taxReturnId,refresh }) => {
     const [w2Forms, setW2Forms] = useState<FormW2[]>([]);
+    const {t} = useTranslation();
 
     useEffect(() => {
         const fetchW2Forms = async () => {
@@ -59,18 +61,18 @@ const W2List: React.FC<W2ListProps> = ({ taxReturnId,refresh }) => {
 
     return (
         <GridContainer>
-            <h3>W2 Forms List</h3>
+            <h3>{t('W2 Forms List')}</h3>
             <Grid row>
                 <Grid col={12}>
                     <Table fullWidth>
                         <thead>
                         <tr>
-                            <th>Year</th>
-                            <th>Wages</th>
-                            <th>Federal Tax Withheld</th>
-                            <th>Social Security Withheld</th>
-                            <th>Medicare Withheld</th>
-                            <th>Actions</th>
+                            <th>{t('Year')}</th>
+                            <th>{t('Wages')}</th>
+                            <th>{t('Federal Tax Withheld')}</th>
+                            <th>{t('Social Security Withheld')}</th>
+                            <th>{t('Medicare Withheld')}</th>
+                            <th>{t('Actions')}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -82,7 +84,7 @@ const W2List: React.FC<W2ListProps> = ({ taxReturnId,refresh }) => {
                                 <td>{form.socialSecurityTaxWithheld}</td>
                                 <td>{form.medicareTaxWithheld}</td>
                                 <td>
-                                    <Button onClick={() => handleDelete(form.id)} secondary type="button">Delete</Button>
+                                    <Button onClick={() => handleDelete(form.id)} secondary type="button">{t('Delete')}</Button>
                                 </td>
                             </tr>
                         ))}
@@ -92,6 +94,7 @@ const W2List: React.FC<W2ListProps> = ({ taxReturnId,refresh }) => {
             </Grid>
         </GridContainer>
     );
+
 };
 
 export default W2List;

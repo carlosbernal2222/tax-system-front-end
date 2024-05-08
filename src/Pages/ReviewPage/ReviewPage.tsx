@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Grid, GridContainer } from '@trussworks/react-uswds';
 import styles from './ReviewPage.module.css';
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 interface ReviewPageProps {
     taxReturnId: number;
@@ -55,6 +56,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
     const [currentTaxReturn, setCurrentTaxReturn] = useState<TaxReturn | null>(null);
     const [formW2s, setFormW2s] = useState<FormW2[]>([]);
     const [form1099s, setForm1099s] = useState<Form1099[]>([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetchPersonData();
@@ -76,6 +78,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
             }
             const data = await response.json();
             setPerson(data);
+
             const taxReturn = data.taxReturns.find(t => t.id === taxReturnId);
             if (taxReturn) {
                 setCurrentTaxReturn(taxReturn);
@@ -138,51 +141,52 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
     return (
         <GridContainer className={styles.container}>
             <Grid row gap>
-                <Grid col={12}><h1>Review Tax Return for ID: {taxReturnId}</h1></Grid>
+                <Grid col={12}><h1>{t('Review Tax Return for ID')}: {taxReturnId}</h1></Grid>
             </Grid>
             <Grid row gap>
                 <Grid col={6}>
-                    <h2>Personal Information</h2>
-                    <p><strong>Name:</strong> {person?.firstName} {person?.middleName} {person?.lastName}</p>
-                    <p><strong>SSN:</strong> {person?.ssn}</p>
-                    <p><strong>Phone:</strong> {person?.phoneNumber}</p>
-                    <p><strong>Address:</strong> {person?.address}</p>
+                    <h2>{t('Personal Information')}</h2>
+                    <p><strong>{t('Name')}:</strong> {person?.firstName} {person?.middleName} {person?.lastName}</p>
+                    <p><strong>{t('SSN')}:</strong> {person?.ssn}</p>
+                    <p><strong>{t('Phone')}:</strong> {person?.phoneNumber}</p>
+                    <p><strong>{t('Address')}:</strong> {person?.address}</p>
                 </Grid>
                 <Grid col={6}>
-                    <h2>Tax Year and Filing Status</h2>
-                    <p><strong>Year:</strong> {currentTaxReturn?.year}</p>
-                    <p><strong>Status:</strong> {currentTaxReturn?.filingStatus}</p>
+                    <h2>{t('Tax Year and Filing Status')}</h2>
+                    <p><strong>{t('Year')}:</strong> {currentTaxReturn?.year}</p>
+                    <p><strong>{t('Status')}:</strong> {currentTaxReturn?.filingStatus}</p>
                 </Grid>
             </Grid>
             <Grid row gap>
                 <Grid col={6}>
-                    <h2>W2 Forms</h2>
+                    <h2>{t('W2 Forms')}</h2>
                     {formW2s.length > 0 ? formW2s.map((w2, index) => (
                         <div key={w2.id} className={styles.formSection} onClick={() => handleFormClick('W2', index)}>
-                            <h3>W2 from {w2.employer.name}</h3>
-                            <p><strong>Wages:</strong> ${w2.wages.toLocaleString()}</p>
-                            <p><strong>Federal Income Tax Withheld:</strong> ${w2.federalIncomeTaxWithheld.toLocaleString()}</p>
-                            <p><strong>Social Security Tax Withheld:</strong> ${w2.socialSecurityTaxWithheld.toLocaleString()}</p>
-                            <p><strong>Medicare Tax Withheld:</strong> ${w2.medicareTaxWithheld.toLocaleString()}</p>
+                            <h3>{t('W2 from')} {w2.employer.name}</h3>
+                            <p><strong>{t('Wages')}:</strong> ${w2.wages.toLocaleString()}</p>
+                            <p><strong>{t('Federal Income Tax Withheld')}:</strong> ${w2.federalIncomeTaxWithheld.toLocaleString()}</p>
+                            <p><strong>{t('Social Security Tax Withheld')}:</strong> ${w2.socialSecurityTaxWithheld.toLocaleString()}</p>
+                            <p><strong>{t('Medicare Tax Withheld')}:</strong> ${w2.medicareTaxWithheld.toLocaleString()}</p>
                         </div>
-                    )) : <p>No W2 forms available.</p>}
+                    )) : <p>{t('No W2 forms available.')}</p>}
                 </Grid>
                 <Grid col={6}>
-                    <h2>1099 Forms</h2>
+                    <h2>{t('1099 Forms')}</h2>
                     {form1099s.length > 0 ? form1099s.map((form1099, index) => (
                         <div key={form1099.id} className={styles.formSection} onClick={() => handleFormClick('1099', index)}>
-                            <h3>1099 from {form1099.payer}</h3>
-                            <p><strong>Amount:</strong> ${form1099.wages.toLocaleString()}</p>
-                            <p><strong>Year:</strong> {form1099.year}</p>
+                            <h3>{t('1099 from')} {form1099.payer}</h3>
+                            <p><strong>{t('Amount')}:</strong> ${form1099.wages.toLocaleString()}</p>
+                            <p><strong>{t('Year')}:</strong> {form1099.year}</p>
                         </div>
-                    )) : <p>No 1099 forms available.</p>}
+                    )) : <p>{t('No 1099 forms available.')}</p>}
                 </Grid>
             </Grid>
             <div className={styles.buttonContainer}>
-                <button onClick={handleSubmit} className="usa-button">Submit Tax Return</button>
+                <button onClick={handleSubmit} className="usa-button">{t('Submit Tax Return')}</button>
             </div>
         </GridContainer>
     );
+
 };
 
 export default ReviewPage;

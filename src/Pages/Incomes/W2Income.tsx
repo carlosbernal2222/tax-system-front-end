@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CreateW2Form from '../../Components/Forms/CreateW2Form.tsx';
 import W2List from '../../Components/FormLists/W2List.tsx';
 import { Grid, GridContainer, Alert } from '@trussworks/react-uswds';
+import {useTranslation} from 'react-i18next';
 import styles from './W2Income.module.css';
 
 interface W2IncomeProps {
@@ -21,7 +22,7 @@ interface FormW2 {
 const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
     const [refresh, setRefresh] = useState<boolean>(false); // State to trigger refresh
     const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
-
+    const {t} = useTranslation();
     const handleCreateForm = async (form: FormW2) => {
         try {
             const response = await fetch('http://localhost:8080/w2s', {
@@ -53,8 +54,8 @@ const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
 
     return (
         <GridContainer className={styles.container}>
-            <div className={styles.header}>W2 Income for Tax Return ID: {taxReturnId}</div>
-            {alert && <Alert headingLevel={"h2"} type={alert.type} role="alert">{alert.message}</Alert>}
+            <div className={styles.header}>{t('W2 Income for Tax Return ID: {{id}}', { id: taxReturnId })}</div>
+            {alert && <Alert headingLevel={"h2"} type={alert.type} role="alert">{t(alert.message)}</Alert>}
             <Grid row gap className={styles.grid}>
                 <Grid col={12} tablet={{ col: 8 }} className={styles.formContainer}>
                     <CreateW2Form taxReturnId={taxReturnId} onCreate={handleCreateForm} />

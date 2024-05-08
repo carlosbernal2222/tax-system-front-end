@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import {Button, TextInput, Label, Grid, GridContainer, Alert, Radio} from '@trussworks/react-uswds';
 import styles from './PersonalInformation.module.css';
+import {useTranslation} from 'react-i18next';
 
 interface PersonalInformationProps {
     taxReturnId: number;
@@ -16,6 +17,7 @@ interface Person {
     address: string;
     phoneNumber: string;
     taxReturns: TaxReturn[];
+
 }
 
 interface TaxReturn {
@@ -36,8 +38,10 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         phoneNumber: '',
         taxReturns: []
     });
+
     const [filingStatus, setFilingStatus] = useState<string>('');
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const { t } = useTranslation();
 
     console.log(filingStatus)
     console.log(person)
@@ -140,51 +144,52 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         <div className={styles.container}>
             {showSuccessMessage && (
                 <Alert type="success" className="margin-bottom-4" headingLevel={"h2"}>
-                    Personal information updated successfully!
+                    {t('Personal information updated successfully!')}
                 </Alert>
             )}
             <form onSubmit={handleSubmit}>
                 <GridContainer className={styles.formGrid}>
                     <Grid row gap>
                         <Grid col={4}>
-                            <Label htmlFor="firstName">First Name</Label>
+                            <Label htmlFor="firstName">{t('First Name')}</Label>
                             <TextInput id="firstName" name="firstName" type="text" value={person.firstName} onChange={handleChange} />
                         </Grid>
                         <Grid col={4}>
-                            <Label htmlFor="middleName">Middle Name (Optional)</Label>
+                            <Label htmlFor="middleName">{t('Middle Name (Optional)')}</Label>
                             <TextInput id="middleName" name="middleName" type="text" value={person.middleName} onChange={handleChange} />
                         </Grid>
                         <Grid col={4}>
-                            <Label htmlFor="lastName">Last Name</Label>
+                            <Label htmlFor="lastName">{t('Last Name')}</Label>
                             <TextInput id="lastName" name="lastName" type="text" value={person.lastName} onChange={handleChange} />
                         </Grid>
                     </Grid>
                     <Grid row gap>
                         <Grid col={4}>
-                            <Label htmlFor="ssn">Social Security Number</Label>
+                            <Label htmlFor="ssn">{t('Social Security Number')}</Label>
                             <TextInput id="ssn" name="ssn" type="text" value={person.ssn} onChange={handleChange} />
                         </Grid>
                         <Grid col={4}>
-                            <Label htmlFor="address">Address</Label>
+                            <Label htmlFor="address">{t('Address')}</Label>
                             <TextInput id="address" name="address" type="text" value={person.address} onChange={handleChange} />
                         </Grid>
                         <Grid col={4}>
-                            <Label htmlFor="phoneNumber">Phone Number</Label>
+                            <Label htmlFor="phoneNumber">{t('Phone Number')}</Label>
                             <TextInput id="telephone" name="phoneNumber" type="tel" value={person.phoneNumber} onChange={handleChange} />
                         </Grid>
                     </Grid>
                 </GridContainer>
                 <div className={styles.buttonContainer}>
-                    <Button type="submit" className={styles.buttonSubmit}>Save Personal Information</Button>
+                    <Button type="submit" className={styles.buttonSubmit}>{t('Save Personal Information')}</Button>
                 </div>
             </form>
             <div className="filing-status-section">
-                <h3>Filing Status</h3>
-                <Radio id="single" name="filingStatus" label="Single" value="Single" checked={filingStatus === "Single"} onChange={handleChange} />
-                <Radio id="jointly" name="filingStatus" label="Jointly" value="Jointly" checked={filingStatus === "Jointly"} onChange={handleChange} />
+                <h3>{t('Filing Status')}</h3>
+                <Radio id="single" name="filingStatus" label={t('Single')} value="Single" checked={filingStatus === "Single"} onChange={handleChange} />
+                <Radio id="jointly" name="filingStatus" label={t('Jointly')} value="Jointly" checked={filingStatus === "Jointly"} onChange={handleChange} />
             </div>
         </div>
     );
+
 };
 
 export default PersonalInformation;

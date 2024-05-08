@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, FormGroup, Label, TextInput, Button, Grid, GridContainer } from '@trussworks/react-uswds';
 import styles from './CreateW2Form.module.css';
+import {useTranslation} from 'react-i18next';
 interface CreateW2FormProps {
     taxReturnId: number;
     onCreate: (form: FormW2) => void;
@@ -26,6 +27,8 @@ const CreateW2Form: React.FC<CreateW2FormProps> = ({ taxReturnId, onCreate }) =>
         medicareTaxWithheld: 0,
     });
 
+    const {t} = useTranslation();
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormW2({ ...formW2, [e.target.name]: parseFloat(e.target.value) });
     };
@@ -39,47 +42,47 @@ const CreateW2Form: React.FC<CreateW2FormProps> = ({ taxReturnId, onCreate }) =>
     };
 
     return (
-
         <Form onSubmit={handleSubmit} large={true}>
             <GridContainer className={styles.fullWidthContainer}>
                 <Grid row gap>
                     <Grid col={6}>
                         <FormGroup>
-                            <Label htmlFor="employerId">Employer ID</Label>
+                            <Label htmlFor="employerId">{t('Employer ID')}</Label>
                             <TextInput id="employerId" name="employerId" type="number" value={formW2.employerId.toString()} onChange={handleChange} required />
                         </FormGroup>
                         <FormGroup>
-                            <Label htmlFor="year">Year</Label>
+                            <Label htmlFor="year">{t('Year')}</Label>
                             <TextInput id="year" name="year" type="number" value={formW2.year.toString()} onChange={handleChange} required />
                         </FormGroup>
                     </Grid>
                     <Grid col={6}>
                         <FormGroup>
-                            <Label htmlFor="wages">Wages</Label>
+                            <Label htmlFor="wages">{t('Wages')}</Label>
                             <TextInput id="wages" name="wages" type="number" value={formW2.wages.toString()} onChange={handleChange} required />
                         </FormGroup>
                         <FormGroup>
-                            <Label htmlFor="federalIncomeTaxWithheld">Federal Tax Withheld</Label>
+                            <Label htmlFor="federalIncomeTaxWithheld">{t('Federal Tax Withheld')}</Label>
                             <TextInput id="federalIncomeTaxWithheld" name="federalIncomeTaxWithheld" type="number" value={formW2.federalIncomeTaxWithheld.toString()} onChange={handleChange} required />
                         </FormGroup>
                     </Grid>
                     <Grid col={12}>
                         <FormGroup>
-                            <Label htmlFor="socialSecurityTaxWithheld">Social Security Tax Withheld</Label>
+                            <Label htmlFor="socialSecurityTaxWithheld">{t('Social Security Tax Withheld')}</Label>
                             <TextInput id="socialSecurityTaxWithheld" name="socialSecurityTaxWithheld" type="number" value={formW2.socialSecurityTaxWithheld.toString()} onChange={handleChange} required />
                         </FormGroup>
                         <FormGroup>
-                            <Label htmlFor="medicareTaxWithheld">Medicare Tax Withheld</Label>
+                            <Label htmlFor="medicareTaxWithheld">{t('Medicare Tax Withheld')}</Label>
                             <TextInput id="medicareTaxWithheld" name="medicareTaxWithheld" type="number" value={formW2.medicareTaxWithheld.toString()} onChange={handleChange} required />
                         </FormGroup>
                     </Grid>
                 </Grid>
                 <div className={styles.submitButtonContainer}>
-                    <Button type="submit" className={"usa-button"}>Submit W2 Form</Button>
+                    <Button type="submit" className={"usa-button"}>{t('Submit W2 Form')}</Button>
                 </div>
             </GridContainer>
         </Form>
     );
+
 };
 
 export default CreateW2Form;

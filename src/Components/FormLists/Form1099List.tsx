@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Table } from '@trussworks/react-uswds';
+import {useTranslation} from 'react-i18next';
 
 interface Form1099 {
     id: number;
@@ -15,6 +16,7 @@ interface Form1099ListProps {
 
 const Form1099List: React.FC<Form1099ListProps> = ({ taxReturnId, refresh }) => {
     const [form1099s, setForm1099s] = useState<Form1099[]>([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchForm1099s = async () => {
@@ -54,15 +56,15 @@ const Form1099List: React.FC<Form1099ListProps> = ({ taxReturnId, refresh }) => 
 
     return (
         <div>
-            <h3>Form 1099 List</h3>
+            <h3>{t('Form 1099 List')}</h3>
             {form1099s.length > 0 ? (
                 <Table fullWidth>
                     <thead>
                     <tr>
-                        <th>Payer</th>
-                        <th>Year</th>
-                        <th>Wages</th>
-                        <th>Actions</th>
+                        <th>{t('Payer')}</th>
+                        <th>{t('Year')}</th>
+                        <th>{t('Wages')}</th>
+                        <th>{t('Actions')}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -72,17 +74,18 @@ const Form1099List: React.FC<Form1099ListProps> = ({ taxReturnId, refresh }) => 
                             <td>{form.year}</td>
                             <td>{form.wages}</td>
                             <td>
-                                <Button onClick={() => handleDelete(form.id)} secondary type="button">Delete</Button>
+                                <Button onClick={() => handleDelete(form.id)} secondary type="button">{t('Delete')}</Button>
                             </td>
                         </tr>
                     ))}
                     </tbody>
                 </Table>
             ) : (
-                <p>No Form 1099s found for this tax return.</p>
+                <p>{t('No Form 1099s found for this tax return.')}</p>
             )}
         </div>
     );
+
 };
 
 export default Form1099List;
