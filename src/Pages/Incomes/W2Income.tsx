@@ -1,112 +1,70 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { Button, TextInput, Label, Grid, GridContainer } from '@trussworks/react-uswds';
+import React, { useState } from 'react';
+import CreateW2Form from '../../Components/Forms/CreateW2Form.tsx';
+import W2List from '../../Components/FormLists/W2List.tsx';
+import { Grid, GridContainer, Alert } from '@trussworks/react-uswds';
+import {useTranslation} from 'react-i18next';
 import styles from './W2Income.module.css';
-
-interface W2Form {
-    id: string;
-    employer: string;
-    year: string;
-    wages: string;
-    federalIncomeTaxWithheld: string;
-    socialSecurityTaxWithheld: string;
-    medicareTaxWithheld: string;
-}
 
 interface W2IncomeProps {
     taxReturnId: number;
 }
 
+interface FormW2 {
+    employerId: number;
+    year: number;
+    wages: number;
+    federalIncomeTaxWithheld: number;
+    socialSecurityTaxWithheld: number;
+    medicareTaxWithheld: number;
+    taxReturnId?: number;
+}
+
 const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
-    const [w2s, setW2s] = useState<W2Form[]>([]);
-    const [w2, setW2] = useState<W2Form>({
-        id: uuidv4(),
-        employer: '',
-        year: '',
-        wages: '',
-        federalIncomeTaxWithheld: '',
-        socialSecurityTaxWithheld: '',
-        medicareTaxWithheld: ''
-    });
+    const [refresh, setRefresh] = useState<boolean>(false); // State to trigger refresh
+    const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+    const {t} = useTranslation();
+    const handleCreateForm = async (form: FormW2) => {
+        try {
+            const response = await fetch('http://localhost:8080/w2s', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...form,
+                    taxReturnId: taxReturnId,
+                }),
+            });
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setW2({ ...w2, [e.target.name]: e.target.value });
-    };
+            if (!response.ok) {
+                throw new Error('Failed to create W2 form');
+            }
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("Submitting W2 Form for Tax Return ID:", taxReturnId, w2);
-        setW2s([...w2s, w2]);
-        setW2({
-            id: uuidv4(),
-            employer: '',
-            year: '',
-            wages: '',
-            federalIncomeTaxWithheld: '',
-            socialSecurityTaxWithheld: '',
-            medicareTaxWithheld: ''
-        }); // Reset the form after submission
-    };
-
-    const handleEdit = (id: string) => {
-        const formToEdit = w2s.find(item => item.id === id);
-        if (formToEdit) {
-            setW2(formToEdit);
+            const result = await response.json();
+            console.log('Form created successfully:', result);
+            setAlert({ type: 'success', message: 'W2 form created successfully!' });
+            setTimeout(() => setAlert(null), 5000);
+            setRefresh(!refresh); // Toggle refresh state to trigger an update in the W2 list
+        } catch (error) {
+            console.error('Error creating W2 form:', error);
+            setAlert({ type: 'error', message: 'Error creating W2 form. Please try again.' });
         }
     };
 
-    const handleDelete = (id: string) => {
-        setW2s(w2s.filter(item => item.id !== id));
-    };
-
     return (
-        <div className={styles.container}>
-            <form onSubmit={handleSubmit}>
-                <GridContainer className={styles.formGrid}>
-                    <Grid row gap>
-                        <Grid col={6}>
-                            <Label htmlFor={`employer-${w2.id}`}>Employer</Label>
-                            <TextInput id={`employer-${w2.id}`} name="employer" type="text" value={w2.employer} onChange={handleChange} />
-                        </Grid>
-                        <Grid col={6}>
-                            <Label htmlFor={`year-${w2.id}`}>Year</Label>
-                            <TextInput id={`year-${w2.id}`} name="year" type="text" value={w2.year} onChange={handleChange} />
-                        </Grid>
-                        <Grid col={4}>
-                            <Label htmlFor={`wages-${w2.id}`}>Wages</Label>
-                            <TextInput id={`wages-${w2.id}`} name="wages" type="text" value={w2.wages} onChange={handleChange} />
-                        </Grid>
-                        <Grid col={4}>
-                            <Label htmlFor={`federalIncomeTaxWithheld-${w2.id}`}>Federal Income Tax Withheld</Label>
-                            <TextInput id={`federalIncomeTaxWithheld-${w2.id}`} name="federalIncomeTaxWithheld" type="text" value={w2.federalIncomeTaxWithheld} onChange={handleChange} />
-                        </Grid>
-                        <Grid col={4}>
-                            <Label htmlFor={`socialSecurityTaxWithheld-${w2.id}`}>Social Security Tax Withheld</Label>
-                            <TextInput id={`socialSecurityTaxWithheld-${w2.id}`} name="socialSecurityTaxWithheld" type="text" value={w2.socialSecurityTaxWithheld} onChange={handleChange} />
-                        </Grid>
-                        <Grid col={4}>
-                            <Label htmlFor={`medicareTaxWithheld-${w2.id}`}>Medicare Tax Withheld</Label>
-                            <TextInput id={`medicareTaxWithheld-${w2.id}`} name="medicareTaxWithheld" type="text" value={w2.medicareTaxWithheld} onChange={handleChange} />
-                        </Grid>
-                    </Grid>
-                    <Button type="submit" className={styles.buttonSubmit}>Add W2 Form</Button>
-                </GridContainer>
-            </form>
-            {w2s.length > 0 && (
-                <div className={styles.listContainer}>
-                    <h3>Existing W2 Forms</h3>
-                    <ul>
-                        {w2s.map((item) => (
-                            <li key={item.id}>
-                                {item.employer} - {item.year} - {item.wages}
-                                <Button className={`${styles.actionButton}`} type="button" onClick={() => handleEdit(item.id)}>Edit</Button>
-                                <Button className={`${styles.actionButton} ${styles.delete}`} type="button" onClick={() => handleDelete(item.id)}>Delete</Button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </div>
+        <GridContainer className={styles.container}>
+            <div className={styles.header}>{t('W2 Income for Tax Return ID: {{id}}', { id: taxReturnId })}</div>
+            {alert && <Alert headingLevel={"h2"} type={alert.type} role="alert">{t(alert.message)}</Alert>}
+            <Grid row gap className={styles.grid}>
+                <Grid col={12} tablet={{ col: 8 }} className={styles.formContainer}>
+                    <CreateW2Form taxReturnId={taxReturnId} onCreate={handleCreateForm} />
+                </Grid>
+                <Grid col={12} tablet={{ col: 12 }} className={styles.listContainer}>
+                    <W2List taxReturnId={taxReturnId} refresh={refresh} />
+                </Grid>
+            </Grid>
+        </GridContainer>
     );
 };
 

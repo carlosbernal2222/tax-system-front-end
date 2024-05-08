@@ -1,72 +1,65 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { Button, TextInput, Label, Grid, GridContainer } from '@trussworks/react-uswds';
+import React, { useState } from 'react';
+import Create1099Form from '../../Components/Forms/Create1099Form.tsx';
+import Form1099List from "../../Components/FormLists/Form1099List.tsx";
+import { Alert, Grid, GridContainer } from "@trussworks/react-uswds";
 import styles from './SelfEmploymentIncome.module.css';
-
-interface Form1099 {
-    id: string;
-    year: string;
-    wages: string;
-}
 
 interface SelfEmploymentIncomeProps {
     taxReturnId: number;
 }
 
+interface Form1099 {
+    year: number;
+    wages: number;
+    payer: string;
+    taxReturnId?: number;
+}
+
 const SelfEmploymentIncome: React.FC<SelfEmploymentIncomeProps> = ({ taxReturnId }) => {
-    const [form1099s, setForm1099s] = useState<Form1099[]>([]);
-    const [form1099, setForm1099] = useState<Form1099>({
-        id: uuidv4(),
-        year: '',
-        wages: ''
-    });
+    const [refresh, setRefresh] = useState(false);
+    const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setForm1099({ ...form1099, [e.target.name]: e.target.value });
-    };
+    const handleCreateForm = async (form: Form1099) => {
+        try {
+            const response = await fetch('http://localhost:8080/form1099s', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...form,
+                    taxReturnId: taxReturnId,
+                }),
+            });
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("Submitting Form 1099 for Tax Return ID:", taxReturnId, form1099);
-        setForm1099s([...form1099s, form1099]);
-        setForm1099({
-            id: uuidv4(),
-            year: '',
-            wages: ''
-        }); // Reset the form after submission
+            if (!response.ok) {
+                throw new Error('Failed to create Form 1099');
+            }
+
+            await response.json();
+            setAlert({ type: 'success', message: 'Form 1099 created successfully!' });
+            setTimeout(() => setAlert(null), 5000);
+            setRefresh(!refresh); // Trigger a refresh of the list
+        } catch (error) {
+            console.error('Error creating Form 1099:', error);
+            setAlert({ type: 'error', message: 'Error creating Form 1099. Please try again.' });
+        }
     };
 
     return (
-        <div className={styles.container}>
-            <form onSubmit={handleSubmit}>
-                <GridContainer className={styles.formGrid}>
-                    <Grid row gap>
-                        <Grid col={6} className={styles.inputField}>
-                            <Label htmlFor={`year-${form1099.id}`} className={styles.label}>Year</Label>
-                            <TextInput id={`year-${form1099.id}`} name="year" type="text" value={form1099.year} onChange={handleChange} className={styles.input} />
-                        </Grid>
-                        <Grid col={6} className={styles.inputField}>
-                            <Label htmlFor={`wages-${form1099.id}`} className={styles.label}>Wages</Label>
-                            <TextInput id={`wages-${form1099.id}`} name="wages" type="text" value={form1099.wages} onChange={handleChange} className={styles.input} />
-                        </Grid>
-                    </Grid>
-                </GridContainer>
-                <Button type="submit" className={styles.buttonSubmit}>Add Form 1099 Entry</Button>
-            </form>
-            {form1099s.length > 0 && (
-                <div className={styles.listContainer}>
-                    <h3>Existing Form 1099 Entries</h3>
-                    <ul>
-                        {form1099s.map((item, index) => (
-                            <li key={item.id} className={index === form1099s.length - 1 ? styles.lastItem : styles.listItem}>
-                                Year: {item.year}, Wages: ${item.wages}
-                                {/* Implement edit/delete functionality if needed */}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </div>
+        <GridContainer className={styles.container}>
+            <div className={styles.header}>Self Employment Income for Tax Return ID: {taxReturnId}</div>
+            {alert && <Alert headingLevel={"h2"} type={alert.type} role="alert">{alert.message}</Alert>}
+            <Grid row gap className={styles.grid}>
+                <Grid col={12} tablet={{ col: 8 }} className={styles.formContainer}>
+                    <Create1099Form taxReturnId={taxReturnId} onCreate={handleCreateForm} />
+                </Grid>
+                <Grid col={12} tablet={{ col: 12 }} className={styles.listContainer}>
+                    <Form1099List taxReturnId={taxReturnId} refresh={refresh} />
+                </Grid>
+            </Grid>
+        </GridContainer>
     );
 };
 
