@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import {Button, TextInput, Label, Grid, GridContainer, Alert, Radio} from '@trussworks/react-uswds';
+import {Button, TextInput, Label, Grid, GridContainer, Alert, Radio, DatePicker} from '@trussworks/react-uswds';
 import styles from './PersonalInformation.module.css';
 import {useTranslation} from 'react-i18next';
 
@@ -16,8 +16,8 @@ interface Person {
     lastName: string;
     address: string;
     phoneNumber: string;
+    dateOfBirth?: string; // New date field
     taxReturns: TaxReturn[];
-
 }
 
 interface TaxReturn {
@@ -36,6 +36,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         lastName: '',
         address: '',
         phoneNumber: '',
+        dateOfBirth: '',
         taxReturns: []
     });
 
@@ -61,6 +62,11 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
                     throw new Error('Failed to fetch person data');
                 }
                 const data: Person = await response.json();
+                
+                if (data.dateOfBirth) {
+                    const formattedDate = new Date(data.dateOfBirth).toISOString().split('T')[0];
+                    data.dateOfBirth = formattedDate;
+                }
                 setPerson(data);
 
                 const taxReturn = data.taxReturns.find(tr => tr.id === taxReturnId);
@@ -140,6 +146,11 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         }
     };
 
+    const handleDateChange = (dateValue?: string) => {
+        setPerson({ ...person, dateOfBirth: dateValue || '' });
+    };
+
+
     return (
         <div className={styles.container}>
             {showSuccessMessage && (
@@ -150,29 +161,52 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
             <form onSubmit={handleSubmit}>
                 <GridContainer className={styles.formGrid}>
                     <Grid row gap>
-                        <Grid col={4}>
+                        <Grid col={2}>
                             <Label htmlFor="firstName">{t('First Name')}</Label>
                             <TextInput id="firstName" name="firstName" type="text" value={person.firstName} onChange={handleChange} />
                         </Grid>
-                        <Grid col={4}>
-                            <Label htmlFor="middleName">{t('Middle Name (Optional)')}</Label>
+                        <Grid col={2}>
+                            <Label htmlFor="middleName">{t('Middle Name')}</Label>
                             <TextInput id="middleName" name="middleName" type="text" value={person.middleName} onChange={handleChange} />
                         </Grid>
                         <Grid col={4}>
                             <Label htmlFor="lastName">{t('Last Name')}</Label>
                             <TextInput id="lastName" name="lastName" type="text" value={person.lastName} onChange={handleChange} />
                         </Grid>
+                        <Grid col={4}>
+                            <Label htmlFor="dateOfBirth" hint={"mm/dd/yyyy"}>{t('Date of Birth')} </Label>
+                            {/*<div className="usa-date-picker">*/}
+                            {/*    <input*/}
+                            {/*        className="usa-input"*/}
+                            {/*        id="dateOfBirth"*/}
+                            {/*        name="dateOfBirth"*/}
+                            {/*        type="text"*/}
+                            {/*        value={person.dateOfBirth}*/}
+                            {/*        onChange={handleChange}*/}
+                            {/*        aria-labelledby="dateOfBirth-label"*/}
+                            {/*        aria-describedby="dateOfBirth-hint"*/}
+                            {/*    />*/}
+                            {/*</div>*/}
+                            <DatePicker
+                                id="dateOfBirth"
+                                name="dateOfBirth"
+                                type="text"
+                                value={person.dateOfBirth}
+                                onChange={handleDateChange} // Use the new handler here
+                            />
+                        </Grid>
+                        
                     </Grid>
                     <Grid row gap>
                         <Grid col={4}>
                             <Label htmlFor="ssn">{t('Social Security Number')}</Label>
                             <TextInput id="ssn" name="ssn" type="text" value={person.ssn} onChange={handleChange} />
                         </Grid>
-                        <Grid col={4}>
+                        <Grid col={5}>
                             <Label htmlFor="address">{t('Address')}</Label>
                             <TextInput id="address" name="address" type="text" value={person.address} onChange={handleChange} />
                         </Grid>
-                        <Grid col={4}>
+                        <Grid col={3}>
                             <Label htmlFor="phoneNumber">{t('Phone Number')}</Label>
                             <TextInput id="telephone" name="phoneNumber" type="tel" value={person.phoneNumber} onChange={handleChange} />
                         </Grid>

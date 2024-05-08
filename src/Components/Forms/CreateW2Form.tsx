@@ -30,8 +30,14 @@ const CreateW2Form: React.FC<CreateW2FormProps> = ({ taxReturnId, onCreate }) =>
     const {t} = useTranslation();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormW2({ ...formW2, [e.target.name]: parseFloat(e.target.value) });
+        const { name, value } = e.target;
+        // Prevent negative values
+        const parsedValue = parseFloat(value);
+        const nonNegativeValue = parsedValue < 0 ? 0 : parsedValue;
+
+        setFormW2({ ...formW2, [name]: nonNegativeValue });
     };
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -48,7 +54,7 @@ const CreateW2Form: React.FC<CreateW2FormProps> = ({ taxReturnId, onCreate }) =>
                     <Grid col={6}>
                         <FormGroup>
                             <Label htmlFor="employerId">{t('Employer ID')}</Label>
-                            <TextInput id="employerId" name="employerId" type="number" value={formW2.employerId.toString()} onChange={handleChange} required />
+                            <TextInput id="employerId" name="employerId" type="number" value={formW2.employerId.toString()} onChange={handleChange} required min={"1"} />
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="year">{t('Year')}</Label>
@@ -58,21 +64,21 @@ const CreateW2Form: React.FC<CreateW2FormProps> = ({ taxReturnId, onCreate }) =>
                     <Grid col={6}>
                         <FormGroup>
                             <Label htmlFor="wages">{t('Wages')}</Label>
-                            <TextInput id="wages" name="wages" type="number" value={formW2.wages.toString()} onChange={handleChange} required />
+                            <TextInput id="wages" name="wages" type="number" value={formW2.wages.toString()} onChange={handleChange} required min={"0"} />
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="federalIncomeTaxWithheld">{t('Federal Tax Withheld')}</Label>
-                            <TextInput id="federalIncomeTaxWithheld" name="federalIncomeTaxWithheld" type="number" value={formW2.federalIncomeTaxWithheld.toString()} onChange={handleChange} required />
+                            <TextInput id="federalIncomeTaxWithheld" name="federalIncomeTaxWithheld" type="number" value={formW2.federalIncomeTaxWithheld.toString()} onChange={handleChange} required min={"0"}/>
                         </FormGroup>
                     </Grid>
                     <Grid col={12}>
                         <FormGroup>
                             <Label htmlFor="socialSecurityTaxWithheld">{t('Social Security Tax Withheld')}</Label>
-                            <TextInput id="socialSecurityTaxWithheld" name="socialSecurityTaxWithheld" type="number" value={formW2.socialSecurityTaxWithheld.toString()} onChange={handleChange} required />
+                            <TextInput id="socialSecurityTaxWithheld" name="socialSecurityTaxWithheld" type="number" value={formW2.socialSecurityTaxWithheld.toString()} onChange={handleChange} required min={"0"} />
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="medicareTaxWithheld">{t('Medicare Tax Withheld')}</Label>
-                            <TextInput id="medicareTaxWithheld" name="medicareTaxWithheld" type="number" value={formW2.medicareTaxWithheld.toString()} onChange={handleChange} required />
+                            <TextInput id="medicareTaxWithheld" name="medicareTaxWithheld" type="number" value={formW2.medicareTaxWithheld.toString()} onChange={handleChange} required min={"0"}/>
                         </FormGroup>
                     </Grid>
                 </Grid>

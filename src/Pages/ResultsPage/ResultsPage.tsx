@@ -22,7 +22,7 @@ const ResultsPage: React.FC = () => {
 
     return (
         <GridContainer className={styles.container}>
-            <Card>
+            <Card className={styles.cardContainer}>
                 <CardHeader className={styles.header}>
                     <h2>{t(resultType)}</h2>
                 </CardHeader>

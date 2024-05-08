@@ -6,7 +6,9 @@
     align-items: center;
     width: 100%;
     min-height: 100vh;
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; /* Light grey background for modern look */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3); /* Soft shadow for depth */
 }
 
 .header {
@@ -21,7 +23,6 @@
 
 .cardContainer {
     width: 100%;
-    padding: 0;
     list-style: none; /* Ensure list style does not apply */
 }
 

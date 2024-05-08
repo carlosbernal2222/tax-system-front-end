@@ -8,7 +8,7 @@ interface TaxFiling {
     id: number;
     year: number;
     completed: boolean;
-    totalRefundDue?: number | null;  // Optional property
+    totalRefundDue: number | null;  // Optional property
 }
 
 const Dashboard: React.FC = () => {

@@ -1,8 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import { Grid, GridContainer } from '@trussworks/react-uswds';
+import React, {useEffect, useRef, useState} from 'react';
+import { Grid, GridContainer, Modal, ModalHeading, ModalFooter, Button } from '@trussworks/react-uswds';
+import Update1099Form from "../../Components/Forms/Update1099Form.tsx";
+import UpdateW2Form from "../../Components/Forms/UpdateW2Form.tsx";
 import styles from './ReviewPage.module.css';
 import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+
 
 interface ReviewPageProps {
     taxReturnId: number;
@@ -14,6 +17,7 @@ interface Person{
     firstName: string;
     middleName: string;
     lastName: string;
+    dateOfBirth: string;
     address: string;
     phoneNumber: string;
 }
@@ -52,10 +56,23 @@ interface Employer{
 const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
 
     const navigate = useNavigate();
+
     const [person, setPerson] = useState<Person | null>(null);
+
     const [currentTaxReturn, setCurrentTaxReturn] = useState<TaxReturn | null>(null);
+
     const [formW2s, setFormW2s] = useState<FormW2[]>([]);
     const [form1099s, setForm1099s] = useState<Form1099[]>([]);
+
+    const [selected1099Form, setSelected1099Form] = useState<Form1099 | null>(null);
+    const [selectedW2Form, setSelectedW2Form] = useState<FormW2 | null>(null);
+
+
+    const modalRefW2 = useRef(null);
+    const modalRef1099 = useRef(null);
+
+
+
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -131,12 +148,17 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
     };
 
     const handleFormClick = (formType: 'W2' | '1099', formIndex: number) => {
-        console.log(formIndex);
-        const route = formType === 'W2'
-            ? `/tax-filing/${taxReturnId}/w2-income`
-            : `/tax-filing/${taxReturnId}/self-employment-income`;
-        navigate(route);
+        if (formType === '1099') {
+            setSelected1099Form(form1099s[formIndex]);
+            modalRef1099.current.toggleModal(true);
+        } else {
+            setSelectedW2Form(formW2s[formIndex]);
+            modalRefW2.current.toggleModal(true);
+        }
     };
+
+
+
 
     return (
         <GridContainer className={styles.container}>
@@ -148,6 +170,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
                     <h2>{t('Personal Information')}</h2>
                     <p><strong>{t('Name')}:</strong> {person?.firstName} {person?.middleName} {person?.lastName}</p>
                     <p><strong>{t('SSN')}:</strong> {person?.ssn}</p>
+                    <p><strong>{t('Date of Birth')}:</strong> {person?.dateOfBirth}</p>
                     <p><strong>{t('Phone')}:</strong> {person?.phoneNumber}</p>
                     <p><strong>{t('Address')}:</strong> {person?.address}</p>
                 </Grid>
@@ -184,6 +207,28 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
             <div className={styles.buttonContainer}>
                 <button onClick={handleSubmit} className="usa-button">{t('Submit Tax Return')}</button>
             </div>
+            <Modal ref={modalRefW2} id="edit-w2-modal" aria-labelledby="edit-w2-modal-heading" aria-describedby="edit-w2-modal-description">
+                <ModalHeading id="edit-w2-modal-heading">{t('Edit W2 Information')}</ModalHeading>
+                <div className="usa-prose" id="edit-w2-modal-description">
+                    {selectedW2Form && <UpdateW2Form formW2Id={selectedW2Form.id}  />}
+                </div>
+                <ModalFooter>
+                    <Button type="button" onClick={() => modalRefW2.current.toggleModal(false)}>{t('Close')}</Button>
+                </ModalFooter>
+            </Modal>
+
+            <Modal ref={modalRef1099} id="edit-1099-modal" aria-labelledby="edit-1099-modal-heading" aria-describedby="edit-1099-modal-description">
+                <ModalHeading id="edit-1099-modal-heading">Edit Self Employment Info</ModalHeading>
+                <div className="usa-prose" id="edit-1099-modal-description">
+                    {selected1099Form && <Update1099Form form1099Id={selected1099Form.id} />}
+                </div>
+                <ModalFooter>
+                    <Button type={"submit"} onClick={() => modalRef1099.current.toggleModal(false)}>Close</Button>
+                </ModalFooter>
+            </Modal>
+
+
+
         </GridContainer>
     );
 
