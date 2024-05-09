@@ -7,6 +7,15 @@ import img from '../../assets/hero-img.png';
 const HeroComponent: React.FC = () => {
   const { t } = useTranslation();
 
+  const handleLogin = () => {
+    // Check if the timeout is already set
+    if (!localStorage.getItem('isLoggedInTimeout')) {
+      localStorage.setItem('isLoggedIn', 'true');
+    }
+
+    window.location.replace("http://localhost:8080/users/signin");
+  };
+
   return (
       <section className="usa-hero custom-hero" aria-label={t('Introduction')}>
         <GridContainer>
@@ -18,7 +27,7 @@ const HeroComponent: React.FC = () => {
             <p>
               {t('Skip the stress of tax season with our straightforward digital tools designed to guide you through each step. Whether you\'re filing as an individual or for your business, we make it easy so you can focus on what matters most.')}
             </p>
-            <a className="usa-button" href="/join-us">
+            <a className="usa-button"  onClick={handleLogin}>
               {t('Join Us')}
             </a>
           </div>

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Grid, GridContainer, Modal, ModalHeading, ModalFooter, Button } from '@trussworks/react-uswds';
+import {Grid, GridContainer, Modal, ModalHeading, ModalFooter, Button, ModalRef} from '@trussworks/react-uswds';
 import Update1099Form from "../../Components/Forms/Update1099Form.tsx";
 import UpdateW2Form from "../../Components/Forms/UpdateW2Form.tsx";
 import styles from './ReviewPage.module.css';
@@ -68,8 +68,8 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
     const [selectedW2Form, setSelectedW2Form] = useState<FormW2 | null>(null);
 
 
-    const modalRefW2 = useRef(null);
-    const modalRef1099 = useRef(null);
+    const modalRefW2 = useRef<ModalRef>(null);
+    const modalRef1099 = useRef<ModalRef>(null);
 
 
 
@@ -96,7 +96,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
             const data = await response.json();
             setPerson(data);
 
-            const taxReturn = data.taxReturns.find(t => t.id === taxReturnId);
+            const taxReturn = data.taxReturns.find((t: TaxReturn) => t.id === taxReturnId);
             if (taxReturn) {
                 setCurrentTaxReturn(taxReturn);
             }
@@ -150,10 +150,10 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
     const handleFormClick = (formType: 'W2' | '1099', formIndex: number) => {
         if (formType === '1099') {
             setSelected1099Form(form1099s[formIndex]);
-            modalRef1099.current.toggleModal(true);
+            modalRef1099.current?.toggleModal();
         } else {
             setSelectedW2Form(formW2s[formIndex]);
-            modalRefW2.current.toggleModal(true);
+            modalRefW2.current?.toggleModal();
         }
     };
 
@@ -213,7 +213,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
                     {selectedW2Form && <UpdateW2Form formW2Id={selectedW2Form.id}  />}
                 </div>
                 <ModalFooter>
-                    <Button type="button" onClick={() => modalRefW2.current.toggleModal(false)}>{t('Close')}</Button>
+                    <Button type="button" onClick={() => modalRefW2.current?.toggleModal()}>{t('Close')}</Button>
                 </ModalFooter>
             </Modal>
 
@@ -223,7 +223,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
                     {selected1099Form && <Update1099Form form1099Id={selected1099Form.id} />}
                 </div>
                 <ModalFooter>
-                    <Button type={"submit"} onClick={() => modalRef1099.current.toggleModal(false)}>Close</Button>
+                    <Button type={"submit"} onClick={() => modalRef1099.current?.toggleModal()}>Close</Button>
                 </ModalFooter>
             </Modal>
 

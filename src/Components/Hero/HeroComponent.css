@@ -1,24 +1,26 @@
-/* Custom Hero Styles */
 .custom-hero {
-
     background: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 20px; /* Added padding for better spacing */
 }
 
 .usa-hero__callout {
-    flex: 1;
+    flex: 1 1 50%;
     padding-right: 20px;
+    margin-right: 150px; /* Consider reducing or removing this on smaller screens */
 }
 
 .usa-hero__image {
-    flex: 1;
+    flex: 1 1 50%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .usa-hero img {
     width: 100%;
-    max-width: 600px;
+    max-width: 500px; /* Adapted for better mobile response */
     height: auto;
 }
 
@@ -26,39 +28,10 @@
 .custom-hero .grid-container {
     display: flex;
     flex-wrap: wrap;
-    /* Allows wrapping on smaller screens */
     align-items: center;
-    /* Vertical alignment */
     justify-content: space-between;
-    /* Horizontal spacing */
 }
 
-.usa-hero__callout {
-    flex: 1 1 50%;
-    /* Flex-grow, flex-shrink, and basis */
-    padding-right: 20px;
-    margin-right: 150px;
-    /* Space between text and image */
-}
-
-.usa-hero__image {
-    flex: 1 1 50%;
-    /* Flex-grow, flex-shrink, and basis */
-    display: flex;
-    justify-content: flex-end;
-    /* Aligns image to the right */
-}
-
-.usa-hero__image img {
-    width: 100%;
-    /* Full width of the container */
-    max-width: 500px;
-    /* Maximum width of the image */
-    height: auto;
-    /* Maintain aspect ratio */
-}
-
-/* Button Styles */
 .usa-button {
     background-color: #004795;
     color: #ffffff;
@@ -66,7 +39,7 @@
     font-size: 1rem;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .usa-button:hover, .usa-button:focus {
@@ -82,7 +55,7 @@
 
     .usa-hero__callout {
         margin-right: 0;
-        padding-right: 0;
+        padding: 0;
     }
 
     .usa-hero__image {
@@ -91,6 +64,6 @@
     }
 
     .usa-hero__image img {
-        max-width: 100%;
+        max-width: 100%; /* Ensures the image scales down on smaller screens */
     }
 }
