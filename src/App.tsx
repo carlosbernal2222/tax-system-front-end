@@ -23,11 +23,11 @@ function App() {
                 <Route path={"edit-profile"} element={<ProfilePage/>}/>
                 <Route path="dashboard" element={<Dashboard/>}/>
                 <Route path="tax-filing/:id" element={<TaxFilingPage/>}>
-                    <Route path="personal-information" element={<PersonalInformation/>}/>
-                    <Route path="w2-income" element={<W2Income/>}/>
-                    <Route path="self-employment-income" element={<SelfEmploymentIncome/>}/>
-                    <Route path="review" element={<ReviewPage/>}/>
-                    <Route path="result" element={<ResultsPage/>}/>
+                    <Route path="personal-information" element={<PersonalInformation taxReturnId={0}/>}/>
+                    <Route path="w2-income" element={<W2Income taxReturnId={0}/>}/>
+                    <Route path="self-employment-income" element={<SelfEmploymentIncome taxReturnId={0}/>}/>
+                    <Route path="review" element={<ReviewPage taxReturnId={0}/>}/>
+                    <Route path="result" element={<ResultsPage taxReturnId={0}/>}/>
                 </Route>
               </Route>
           </Routes>
