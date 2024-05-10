@@ -60,7 +60,7 @@ const UpdateW2Form: React.FC<UpdateW2FormProps> = ({ formW2Id }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/w2s`, {
+            const response = await fetch(`http://team8.skillstorm-congo.com:8080/w2s`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {

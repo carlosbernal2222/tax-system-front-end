@@ -25,7 +25,7 @@ const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
     const {t} = useTranslation();
     const handleCreateForm = async (form: FormW2) => {
         try {
-            const response = await fetch('http://localhost:8080/w2s', {
+            const response = await fetch('http://team8.skillstorm-congo.com:8080/w2s', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

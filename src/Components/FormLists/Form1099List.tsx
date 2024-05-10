@@ -21,7 +21,7 @@ const Form1099List: React.FC<Form1099ListProps> = ({ taxReturnId, refresh }) => 
     useEffect(() => {
         const fetchForm1099s = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/form1099s/tax-return/${taxReturnId}`, {
+                const response = await fetch(`http://team8.skillstorm-congo.com:8080/form1099s/tax-return/${taxReturnId}`, {
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -40,7 +40,7 @@ const Form1099List: React.FC<Form1099ListProps> = ({ taxReturnId, refresh }) => 
 
     const handleDelete = async (id: number) => {
         try {
-            const response = await fetch(`http://localhost:8080/form1099s/${id}`, {
+            const response = await fetch(`http://team8.skillstorm-congo.com:8080/form1099s/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });

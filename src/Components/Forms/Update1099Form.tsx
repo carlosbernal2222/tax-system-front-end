@@ -52,7 +52,7 @@ const Update1099Form: React.FC<Update1099FormProps> = ({ form1099Id }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/form1099s`, {
+            const response = await fetch(`http://team8.skillstorm-congo.com:8080/form1099s`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

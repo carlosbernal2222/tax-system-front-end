@@ -21,7 +21,7 @@ const SelfEmploymentIncome: React.FC<SelfEmploymentIncomeProps> = ({ taxReturnId
 
     const handleCreateForm = async (form: Form1099) => {
         try {
-            const response = await fetch('http://localhost:8080/form1099s', {
+            const response = await fetch('http://team8.skillstorm-congo.com:8080/form1099s', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

@@ -24,7 +24,7 @@ const W2List: React.FC<W2ListProps> = ({ taxReturnId,refresh }) => {
     useEffect(() => {
         const fetchW2Forms = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/w2s/tax-return/${taxReturnId}`, {
+                const response = await fetch(`http://team8.skillstorm-congo.com:8080/w2s/tax-return/${taxReturnId}`, {
                     method: 'GET',  // Explicitly set the method for clarity, though 'GET' is the default
                     credentials: 'include',  // Ensures cookies, authorization headers, etc., are sent with the request
                 });
@@ -43,7 +43,7 @@ const W2List: React.FC<W2ListProps> = ({ taxReturnId,refresh }) => {
 
     const handleDelete = async (id: number) => {
         try {
-            const response = await fetch(`http://localhost:8080/w2s/${id}`, {
+            const response = await fetch(`http://team8.skillstorm-congo.com:8080/w2s/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
