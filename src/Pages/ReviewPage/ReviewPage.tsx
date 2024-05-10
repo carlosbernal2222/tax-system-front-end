@@ -83,7 +83,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
 
     const fetchPersonData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/persons/${taxReturnId}/person`, {
+            const response = await fetch(`http://team8.skillstorm-congo.com:8080/persons/${taxReturnId}/person`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
     };
     const fetchFormsData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/returns/${taxReturnId}/forms`, {
+            const response = await fetch(`http://team8.skillstorm-congo.com:8080/returns/${taxReturnId}/forms`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
     const handleSubmit = async () => {
         try {
             // Fetch the tax due amount from the backend
-            const response = await fetch(`http://localhost:8080/tax/calculate/${taxReturnId}`, {
+            const response = await fetch(`http://team8.skillstorm-congo.com:8080/tax/calculate/${taxReturnId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

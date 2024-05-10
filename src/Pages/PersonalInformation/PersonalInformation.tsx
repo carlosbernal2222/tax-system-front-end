@@ -51,7 +51,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
     useEffect(() => {
         const fetchPersonData = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/persons/${taxReturnId}/person`, {
+                const response = await fetch(`http://team8.skillstorm-congo.com:8080/persons/${taxReturnId}/person`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
             return;
         }
         try {
-            const response = await fetch(`http://localhost:8080/persons/person/${person.id}`, {
+            const response = await fetch(`http://team8.skillstorm-congo.com:8080/persons/person/${person.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         };
 
         try {
-            const response = await fetch(`http://localhost:8080/returns/${taxReturnId}`, {
+            const response = await fetch(`http://team8.skillstorm-congo.com:8080/returns/${taxReturnId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

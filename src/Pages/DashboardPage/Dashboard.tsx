@@ -20,7 +20,7 @@ const Dashboard: React.FC = () => {
     useEffect(() => {
         const fetchPersonId = async () => {
             try { //call to retrieve person for token
-                const response = await fetch('http://localhost:8080/persons/tokenPerson', {
+                const response = await fetch('http://team8.skillstorm-congo.com:8080/persons/tokenPerson', {
                     credentials: 'include',
                     method: 'GET',
                     headers: {
@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
     const fetchTaxFilings = async () => {
         try {
             if (personIdRef.current !== null) {
-                const response = await fetch(`http://localhost:8080/persons/${personIdRef.current}/tax-returns`, {
+                const response = await fetch(`http://team8.skillstorm-congo.com:8080/persons/${personIdRef.current}/tax-returns`, {
                     credentials: 'include',
                     method: 'GET',
                     headers: {
@@ -102,7 +102,7 @@ const Dashboard: React.FC = () => {
                 totalRefundDue: null
             };
 
-            const response = await fetch(`http://localhost:8080/returns/${personIdRef.current}`, {
+            const response = await fetch(`http://team8.skillstorm-congo.com:8080/returns/${personIdRef.current}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

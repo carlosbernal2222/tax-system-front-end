@@ -43,7 +43,7 @@ const HeaderComponent: React.FC = () => {
         localStorage.setItem('isLoggedIn', 'true');
     }
 
-    window.location.replace("http://localhost:8080/users/signin");
+    window.location.replace("http://team8.skillstorm-congo.com:8080/users/signin");
 };
 
 
@@ -54,7 +54,7 @@ const handleLogout = () => {
     localStorage.setItem('isLoggedIn', 'false');
   }
 
-  window.location.replace("http://localhost:8080/logout");
+  window.location.replace("http://team8.skillstorm-congo.com:8080/logout");
 };
 
 
