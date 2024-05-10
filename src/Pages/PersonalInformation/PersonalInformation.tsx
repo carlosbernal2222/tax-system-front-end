@@ -28,6 +28,12 @@ interface TaxReturn {
     totalRefundDue: number | null;
 }
 
+/**
+ * Updates and retrieves personal information for a given tax return ID.
+ *
+ * @param {string} taxReturnId - The ID of the tax return.
+ * @returns {JSX.Element} - The personal information form component.
+ */
 const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }) => {
     const [person, setPerson] = useState<Person>({
         ssn: '',
@@ -86,6 +92,12 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         }
     }, [filingStatus]);
 
+    /**
+     * Updates the state based on the input change event.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event.
+     * @returns {void}
+     */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.name === 'filingStatus') {
             setFilingStatus(e.target.value);
@@ -94,6 +106,12 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         }
     };
 
+    /**
+     * Handles the form submission for updating personal information.
+     *
+     * @param {React.FormEvent<HTMLFormElement>} e - The form event.
+     * @returns {Promise<void>} - Returns a promise that resolves when the submission is completed.
+     */
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!person.id) {
@@ -120,6 +138,15 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
         }
     };
 
+    /**
+     * Updates the filing status for a tax return by making a PUT request to the server.
+     * If the request is successful, shows a success message for 5 seconds.
+     * If the request fails, logs an error message.
+     *
+     * @async
+     * @function handleFilingStatusUpdate
+     * @returns {Promise<void>}
+     */
     const handleFilingStatusUpdate = async () => {
         // Create the complete tax return object with the current filing status
         const taxReturnUpdate = {
@@ -175,18 +202,6 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ taxReturnId }
                         </Grid>
                         <Grid col={4}>
                             <Label htmlFor="dateOfBirth" hint={"mm/dd/yyyy"}>{t('Date of Birth')} </Label>
-                            {/*<div className="usa-date-picker">*/}
-                            {/*    <input*/}
-                            {/*        className="usa-input"*/}
-                            {/*        id="dateOfBirth"*/}
-                            {/*        name="dateOfBirth"*/}
-                            {/*        type="text"*/}
-                            {/*        value={person.dateOfBirth}*/}
-                            {/*        onChange={handleChange}*/}
-                            {/*        aria-labelledby="dateOfBirth-label"*/}
-                            {/*        aria-describedby="dateOfBirth-hint"*/}
-                            {/*    />*/}
-                            {/*</div>*/}
                             <DatePicker
                                 id="dateOfBirth"
                                 name="dateOfBirth"

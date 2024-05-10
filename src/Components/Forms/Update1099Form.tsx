@@ -21,6 +21,9 @@ const Update1099Form: React.FC<Update1099FormProps> = ({ form1099Id }) => {
     console.log(form1099)
 
     useEffect(() => {
+        /**
+         * Fetches the data for Form 1099 from the server.
+         */
         const fetchForm1099Data = async () => {
             try {
                 const response = await fetch(`http://localhost:8080/form1099s/${form1099Id}`, {
@@ -44,12 +47,23 @@ const Update1099Form: React.FC<Update1099FormProps> = ({ form1099Id }) => {
         fetchForm1099Data();
     }, [form1099Id]);
 
+    /**
+     * Handles the change event for the input fields in the Update1099Form component.
+     * Updates the form state with the new values.
+     * 
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The change event object.
+     */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setForm1099(prevState => ({ ...prevState, [name]: name === 'wages' ? parseFloat(value) : value }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    /**
+     * Handles the form submission for updating Form 1099.
+     * @param {React.FormEvent} e - The form event.
+     * @returns {Promise<void>} - A promise that resolves when the form is submitted successfully.
+     */
+    const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         try {
             const response = await fetch(`http://team8.skillstorm-congo.com:8080/form1099s`, {

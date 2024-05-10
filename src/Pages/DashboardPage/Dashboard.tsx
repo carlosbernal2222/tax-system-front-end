@@ -18,8 +18,12 @@ const Dashboard: React.FC = () => {
     const { t } = useTranslation();
 
     useEffect(() => {
+        /**
+         * Fetches the person ID from the server and sets it in the personIdRef.
+         * Then calls the fetchTaxFilings function.
+         */
         const fetchPersonId = async () => {
-            try { //call to retrieve person for token
+            try {
                 const response = await fetch('http://team8.skillstorm-congo.com:8080/persons/tokenPerson', {
                     credentials: 'include',
                     method: 'GET',
@@ -31,7 +35,7 @@ const Dashboard: React.FC = () => {
                     throw new Error('Failed to fetch person ID');
                 }
                 const data = await response.json();
-                personIdRef.current = data.id; // Assuming your response contains the person ID
+                personIdRef.current = data.id; 
                 console.log('Person ID:', personIdRef.current);
 
                 // Call fetchTaxFilings after setting personIdRef.current
@@ -126,11 +130,22 @@ const Dashboard: React.FC = () => {
     };
 
 
+    /**
+     * Handles continue filing for a given ID.
+     *
+     * @param {number} id - The ID of the filing to continue.
+     */
     const handleContinueFiling = (id: number) => {
         console.log(`Continuing filing for ID ${id}`);
         navigate(`/tax-filing/${id}/personal-information`);
     };
 
+    /**
+     * Displays the tax information for a given tax filing.
+     *
+     * @param {TaxFiling} filing - The tax filing object.
+     * @returns {string} - The tax information message.
+     */
     const displayTaxInfo = (filing: TaxFiling) => {
         const refundDue = filing.totalRefundDue;
         if (refundDue === null) return "Not Calculated";

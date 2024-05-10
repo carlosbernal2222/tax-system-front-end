@@ -1,9 +1,9 @@
 html,
 body {
     height: 100%;
-    /* Ensure the full height */
+
     margin: 0;
-    /* Remove default margin */
+
 }
 
 #root {
@@ -15,5 +15,5 @@ body {
 
 .app {
     flex: 1;
-    /* Makes the application container grow to fill the space */
+
 }

@@ -8,7 +8,7 @@ interface UpdateW2FormProps {
 
 interface FormW2 {
     id: number;
-    employer: string; // Adjust based on actual employer details
+    employer: string;
     year: number;
     wages: number;
     federalIncomeTaxWithheld: number;
@@ -52,11 +52,22 @@ const UpdateW2Form: React.FC<UpdateW2FormProps> = ({ formW2Id }) => {
         fetchW2Data();
     }, [formW2Id]);
 
+    /**
+     * Handles the change event for input fields in the UpdateW2Form component.
+     * Updates the formW2 state with the new value.
+     * 
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The change event object.
+     */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormW2(prevState => ({ ...prevState, [name]: parseFloat(value) }));
     };
 
+    /**
+     * Handles the form submission for updating W2 information.
+     * 
+     * @param e - The form event.
+     */
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {

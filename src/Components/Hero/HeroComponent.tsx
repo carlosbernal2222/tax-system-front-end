@@ -7,8 +7,12 @@ import img from '../../assets/hero-img.png';
 const HeroComponent: React.FC = () => {
   const { t } = useTranslation();
 
+  /**
+   * Handles the signup functionality.
+   * If the user is not already logged in, it sets the 'isLoggedIn' flag in the local storage to true.
+   * Redirects the user to the login page.
+   */
   const handleLogin = () => {
-    // Check if the timeout is already set
     if (!localStorage.getItem('isLoggedInTimeout')) {
       localStorage.setItem('isLoggedIn', 'true');
     }

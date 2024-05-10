@@ -16,8 +16,16 @@ const ResultsPage: React.FC = () => {
     const alertType = isRefund ? 'success' : 'warning';
     const { t } = useTranslation();
 
+    /**
+     * Navigates to the dashboard page.
+     *
+     * Ensure this path matches your application's routes.
+     *
+     * @function
+     * @name navigateToDashboard
+     */
     const navigateToDashboard = () => {
-        navigate('/dashboard'); // Ensure this path matches your application's routes
+        navigate('/dashboard');
     };
 
     return (

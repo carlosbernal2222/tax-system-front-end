@@ -14,7 +14,7 @@ interface FormW2 {
     federalIncomeTaxWithheld: number;
     socialSecurityTaxWithheld: number;
     medicareTaxWithheld: number;
-    taxReturnId?: number; // Include this if the taxReturnId should be part of the form submission
+    taxReturnId?: number; 
 }
 
 const CreateW2Form: React.FC<CreateW2FormProps> = ({ taxReturnId, onCreate }) => {
@@ -29,6 +29,11 @@ const CreateW2Form: React.FC<CreateW2FormProps> = ({ taxReturnId, onCreate }) =>
 
     const {t} = useTranslation();
 
+    /**
+     * Handles the change event for input fields in the CreateW2Form component.
+     * Updates the corresponding value in the formW2 state object.
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The change event object.
+     */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         // Prevent negative values
@@ -39,6 +44,11 @@ const CreateW2Form: React.FC<CreateW2FormProps> = ({ taxReturnId, onCreate }) =>
     };
 
 
+    /**
+     * Handles the form submission for creating a W2 form.
+     * 
+     * @param {React.FormEvent} e - The form event object.
+     */
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onCreate({

@@ -7,6 +7,10 @@ interface W2ListProps {
     refresh: boolean;
 }
 
+
+/**
+ * Represents a W2 form.
+ */
 interface FormW2 {
     id: number;
     employerId: number;
@@ -22,11 +26,14 @@ const W2List: React.FC<W2ListProps> = ({ taxReturnId,refresh }) => {
     const {t} = useTranslation();
 
     useEffect(() => {
+        /**
+         * Fetches W2 forms for a specific tax return.
+         */
         const fetchW2Forms = async () => {
             try {
                 const response = await fetch(`http://team8.skillstorm-congo.com:8080/w2s/tax-return/${taxReturnId}`, {
-                    method: 'GET',  // Explicitly set the method for clarity, though 'GET' is the default
-                    credentials: 'include',  // Ensures cookies, authorization headers, etc., are sent with the request
+                    method: 'GET',  
+                    credentials: 'include', // Include credentials for authentication
                 });
                 if (!response.ok) {
                     throw new Error('Failed to fetch W2 forms');
@@ -39,8 +46,14 @@ const W2List: React.FC<W2ListProps> = ({ taxReturnId,refresh }) => {
         };
 
         fetchW2Forms();
-    }, [taxReturnId, refresh]);
+    }, [taxReturnId, refresh]);// taxReturnId and refresh as dependencies
 
+
+    /**
+     * Handles the deletion of a W2 form.
+     * 
+     * @param id - The ID of the W2 form to be deleted.
+     */
     const handleDelete = async (id: number) => {
         try {
             const response = await fetch(`http://team8.skillstorm-congo.com:8080/w2s/${id}`, {

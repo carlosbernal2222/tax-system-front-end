@@ -81,6 +81,14 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
     }, [taxReturnId]);
 
 
+    /**
+     * Fetches person data from the server and performs necessary operations based on the response.
+     * @async
+     * @function fetchPersonData
+     * @throws {Error} - Failed to fetch person data
+     * @throws {Error} - Error fetching person data
+     * @returns {void}
+     */
     const fetchPersonData = async () => {
         try {
             const response = await fetch(`http://team8.skillstorm-congo.com:8080/persons/${taxReturnId}/person`, {
@@ -104,6 +112,16 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
             console.error('Error fetching person data:', error);
         }
     };
+    /**
+     * Fetch tax forms data from the server.
+     *
+     * @async
+     * @returns {void}
+     * @throws {Error} If failed to fetch tax forms data.
+     *
+     * @example
+     * fetchFormsData();
+     */
     const fetchFormsData = async () => {
         try {
             const response = await fetch(`http://team8.skillstorm-congo.com:8080/returns/${taxReturnId}/forms`, {
@@ -125,6 +143,14 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
     };
 
 
+    /**
+     * Function to handle the submission of a tax return.
+     * This function fetches the tax due amount from the backend and navigates to the result page.
+     * If there is an error calculating the tax due, it logs the error to the console.
+     * @async
+     * @function
+     * @returns {void}
+     */
     const handleSubmit = async () => {
         try {
             // Fetch the tax due amount from the backend
@@ -138,7 +164,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
             if (!response.ok) {
                 throw new Error('Failed to calculate tax due');
             }
-            const taxDue = await response.json(); // Assuming the endpoint returns the tax due directly
+            const taxDue = await response.json();
 
             // Navigate to the result page with the tax due amount
             navigate(`/tax-filing/${taxReturnId}/result?amount=${taxDue.toFixed(2)}`, { replace: true });
@@ -147,6 +173,14 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ taxReturnId }) => {
         }
     };
 
+    /**
+     * Handles click event on a form.
+     *
+     * @param {('W2' | '1099')} formType - The type of the form ('W2' or '1099').
+     * @param {number} formIndex - The index of the form.
+     *
+     * @returns {void}
+     */
     const handleFormClick = (formType: 'W2' | '1099', formIndex: number) => {
         if (formType === '1099') {
             setSelected1099Form(form1099s[formIndex]);

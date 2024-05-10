@@ -19,6 +19,9 @@ const Form1099List: React.FC<Form1099ListProps> = ({ taxReturnId, refresh }) => 
     const { t } = useTranslation();
 
     useEffect(() => {
+        /**
+         * Fetches Form 1099s from the server based on the tax return ID.
+         */
         const fetchForm1099s = async () => {
             try {
                 const response = await fetch(`http://team8.skillstorm-congo.com:8080/form1099s/tax-return/${taxReturnId}`, {
@@ -38,6 +41,10 @@ const Form1099List: React.FC<Form1099ListProps> = ({ taxReturnId, refresh }) => 
         fetchForm1099s();
     }, [taxReturnId, refresh]);
 
+    /**
+     * Handles the deletion of a Form 1099.
+     * @param id - The ID of the Form 1099 to delete.
+     */
     const handleDelete = async (id: number) => {
         try {
             const response = await fetch(`http://team8.skillstorm-congo.com:8080/form1099s/${id}`, {

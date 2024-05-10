@@ -15,6 +15,10 @@ interface Form1099 {
 }
 
 const Create1099Form: React.FC<Create1099FormProps> = ({ taxReturnId, onCreate }) => {
+    
+    /**
+     * Represents the state of the 1099 form.
+     */
     const [form1099, setForm1099] = useState<Form1099>({
         payer: '',
         year: new Date().getFullYear(),
@@ -22,6 +26,12 @@ const Create1099Form: React.FC<Create1099FormProps> = ({ taxReturnId, onCreate }
     });
     const {t} = useTranslation();
 
+    /**
+     * Handles the change event for input fields.
+     * Updates the form1099 state with the new values.
+     * 
+     * @param e - The change event object.
+     */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type } = e.target;
         setForm1099({
@@ -30,12 +40,16 @@ const Create1099Form: React.FC<Create1099FormProps> = ({ taxReturnId, onCreate }
         });
     };
 
+    /**
+     * Handles the form submission for creating a 1099 form.
+     * 
+     * @param {React.FormEvent} e - The form event.
+     */
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onCreate({
             ...form1099,
-            taxReturnId: taxReturnId,  // Ensure taxReturnId is passed correctly if required
-        });
+            taxReturnId: taxReturnId,        });
     };
 
     return (

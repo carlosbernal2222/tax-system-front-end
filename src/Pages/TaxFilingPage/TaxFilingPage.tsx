@@ -26,9 +26,9 @@ const TaxFilingPage: React.FC = () => {
 
     const currentStepIndex = steps.findIndex(step => location.pathname.includes(step.path));
 
-    // Modify goToNextStep to prevent navigation on the last informational step
+
     const goToNextStep = () => {
-        if (currentStepIndex < steps.length - 2) { // Adjust index to stop before 'result' step
+        if (currentStepIndex < steps.length - 2) { 
             navigate(steps[currentStepIndex + 1].path);
         }
     };

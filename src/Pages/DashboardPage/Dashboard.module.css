@@ -1,4 +1,4 @@
-/* src/components/Dashboard.module.css */
+
 .dashboardContainer {
     padding: 40px;
     display: flex;
@@ -6,9 +6,9 @@
     align-items: center;
     width: 100%;
     min-height: 100vh;
-    background-color: #f9f9f9; /* Light grey background for modern look */
+    background-color: #f9f9f9;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3); /* Soft shadow for depth */
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 
 .header {
@@ -23,7 +23,7 @@
 
 .cardContainer {
     width: 100%;
-    list-style: none; /* Ensure list style does not apply */
+    list-style: none;
 }
 
 .taxCard {
@@ -31,9 +31,9 @@
     transition: box-shadow 0.3s ease-in-out;
     border-radius: 5px;
     overflow: hidden;
-    margin: 0; /* Reset margin */
-    padding: 0; /* Reset padding */
-    list-style-type: none; /* Remove bullet points */
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 
 .cardTitle {

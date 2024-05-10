@@ -2,7 +2,7 @@
 
 .fullWidthContainer {
     width: 100%;
-    max-width: none; /* Overrides any max-width set by USWDS */
+    max-width: none; 
 }
 
 .submitButtonContainer {

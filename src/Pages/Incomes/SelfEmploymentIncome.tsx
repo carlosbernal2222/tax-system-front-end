@@ -19,6 +19,14 @@ const SelfEmploymentIncome: React.FC<SelfEmploymentIncomeProps> = ({ taxReturnId
     const [refresh, setRefresh] = useState(false);
     const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
+    /**
+     * Handles the creation of a Form 1099.
+     *
+     * @param {Form1099} form - The Form 1099 data to be created.
+     * @returns {void}
+     *
+     * @throws Error - If failed to create the Form 1099.
+     */
     const handleCreateForm = async (form: Form1099) => {
         try {
             const response = await fetch('http://team8.skillstorm-congo.com:8080/form1099s', {

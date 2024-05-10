@@ -23,6 +23,14 @@ const W2Income: React.FC<W2IncomeProps> = ({ taxReturnId }) => {
     const [refresh, setRefresh] = useState<boolean>(false); // State to trigger refresh
     const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
     const {t} = useTranslation();
+
+    /**
+     * Handles the creation of a W2 form.
+     *
+     * @param {FormW2} form - The W2 form data to be created.
+     * @returns {Promise<void>} - A promise that resolves with no value.
+     * @throws {Error} - If there is an error during the creation process.
+     */
     const handleCreateForm = async (form: FormW2) => {
         try {
             const response = await fetch('http://team8.skillstorm-congo.com:8080/w2s', {

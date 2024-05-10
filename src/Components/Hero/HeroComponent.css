@@ -3,13 +3,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px; /* Added padding for better spacing */
+    padding: 20px;=
 }
 
 .usa-hero__callout {
     flex: 1 1 50%;
     padding-right: 20px;
-    margin-right: 150px; /* Consider reducing or removing this on smaller screens */
+    margin-right: 150px; =
 }
 
 .usa-hero__image {
@@ -20,7 +20,7 @@
 
 .usa-hero img {
     width: 100%;
-    max-width: 500px; /* Adapted for better mobile response */
+    max-width: 500px; =
     height: auto;
 }
 
@@ -64,6 +64,6 @@
     }
 
     .usa-hero__image img {
-        max-width: 100%; /* Ensures the image scales down on smaller screens */
+        max-width: 100%; =
     }
 }
